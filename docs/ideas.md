@@ -1,11 +1,9 @@
-## Team Chi
-
-## TEST IT!
+## Team Chi -- TEST IT!
 
 ## Team Overview
-* Maheen Hussain 
-* Kanishk Chaudary
-* Daniel Yu
+* Maheen Hussain - @VariableV
+* Kanishk Chaudary - @Kanishk-Chaudhary
+* Daniel Yu - @dcyu
 
 ## Innovative Idea
 Test It! is a learning tool that gamify's the test writing process for students to encourage them to write good tests. Our intended audience is for teachers to use this to make their classroom learning environment more vibrant and help students creatively compete to learn and design tests that'll help discover bugs and maximize test coverage. 
