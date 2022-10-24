@@ -3,7 +3,7 @@ TBD
 
 ## Wireframes
 Login - Basic login form
-![login](wireframes/Login\ Page.png)
+![login](wireframes/Login%20Page.png)
 Create Account - Create account
 ![createacc](wireframes/Create\ an\ Account.png)
 Student Dashboard - Contains info about student assignments
