@@ -9,7 +9,7 @@ Create Account - Create account
 Student Dashboard - Contains info about student assignments
 ![sdash](wireframes/Student%20Dashboard.png)
 Student Profile - Contains information about user statistics
-![sprofile](wireframes/Student%20Profile_.png)
+![sprofile](wireframes/Student%20Profile.png)
 Instructor Dashboard - Dashboard for teacher to deploy projects
 ![idash](wireframes/Instructor%20Dashboard2.png)
 Instructor profile - Contains information about professor statistics
