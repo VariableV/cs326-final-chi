@@ -6,7 +6,7 @@ Login - Basic login form
 Create Account - Create account
 ![createacc](wireframes/create_acc.png)
 Student Dashboard - Contains info about student assignments
-![sdash](wireframes/student_dashboard.png)
+![sdash](wireframes/student_dash.png)
 Student Profile - Contains information about user statistics
 ![sprofile](wireframes/student_profile.png)
 Instructor Dashboard - Dashboard for teacher to deploy projects
