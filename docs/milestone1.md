@@ -13,7 +13,7 @@ Student Profile - Contains information about user statistics
 Instructor Dashboard - Dashboard for teacher to deploy projects
 ![idash](wireframes/Instructor%20Dashboard2.png)
 Instructor profile - Contains information about professor statistics
-![iprofile](wireframes/Instructor%20Profile.png)
+![iprofile](wireframes/Instructor%20Profile2.png)
 Assignment Page - Has information about user's test submissions
 ![ap](wireframes/Assignment%20Page.png)
 Upload Test Form 
