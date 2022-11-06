@@ -1,6 +1,6 @@
 * {
     font-family: Arial;
-
+    
 }
 
 p{
@@ -33,7 +33,7 @@ input
  justify-content: center;
 }
 
-#loginBox
+#signupBox
 {
     display: flex;
     justify-content: center;
@@ -42,19 +42,20 @@ input
     border: 3px solid black;
     border-radius: 10px;
     padding: 50px;
-    width: 30%;
-    height: 60%;
+    width: 35%;
+    height: 75%;
     margin: auto;
 }
 
-#loginButton
+#signupButton
 {
     padding:15px 5px;
     width: 100%;
     font-size: 16px;
-    border-radius: 20px;
+    border-radius: 25px;
     padding-top: 10px;
-    background-color: #13274E;
+    background-color: black;
     color: white;
+    cursor: pointer;
 
 }
