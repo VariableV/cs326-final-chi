@@ -56,5 +56,6 @@ input
     padding-top: 10px;
     background-color: black;
     color: white;
+    cursor: pointer;
 
 }

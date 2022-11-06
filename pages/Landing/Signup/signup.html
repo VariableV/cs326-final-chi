@@ -4,27 +4,39 @@
         <title>Signup</title>
         <link rel="stylesheet" href="signup.css" />
         <script src = "/components/loginNavbar/loginNavbar.js"></script> 
+        <script type="module" src="/pages/Landing/Signup/signup.js" defer></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+        
+
     </head>
     <body>
         <div id ="background">
             <div id = "signupBox">
                 <div style="width: 100%;">
                     <div style="margin-bottom: 20px; text-align: center;">
-                        <p style = "font-size: 35px; margin-bottom: 10px; font-weight: 500;">Create an account</p>
+                        <p style = "font-size: 35px; margin-bottom: 10px; font-weight: 600;">Create an account</p>
                         <p style="color: gray; font-size: 14px;">With “Test It!” you can gamify the testing process by having students compete to craft the best set of tests</p>
                     </div>
                     
                     <div>
                         <form>
                             <label>Email</label><br>
-                            <input type="email" id="emailInput" /><br><br>
+                            <input type="email" id="emailInput" /><br>
+                            <p style="color: red; margin-top: 5;" id ="emailError"></p><br>
                             <label>Phone</label><br>
-                            <input type="email" id="phoneInput" />
-                            <p style="color: gray; font-size: 11.5px; margin-top: 10px;" >We strongly recommend adding a phone number. This will help verify your account and keep it safe.</p><br>
+                            <input type="tel" id="phoneInput" />
+                            <p style="color: gray; font-size: 11.5px; margin-top: 10px;" >We strongly recommend adding a phone number. This will help verify your account and keep it safe.</p>
+                            <p style="color: red; margin-top: 5;" id ="phoneError"></p><br>
                             <label>Password</label><br>
-                            <input type="password" id ="passwordInput" /><br><br><br>
-                            <button id="signupButton">Sign up</button>    
+                            <div style ="display: flex;">
+                                <input type="password" id ="passwordInput" /><br>
+                                <i class="bi bi-eye-slash" id="togglePassword" style="scale: 1.5; margin-top: 22px; margin-left:-35px;cursor: pointer;"></i>
+                            </div>
+                            <p style="color: red; margin-top: 5px;" id ="passwordError"></p><br>
+                            
                         </form>
+
+                        <button id="signupButton">Sign up</button> 
                         <div style="text-align: center;">
                             <p style="color: gray; margin-top: 5px;">Already have an account? <a href="/pages/Landing/Login/login.html" style="color: black; text-decoration: underline;">Log in here!</a></p>
                         </div>
