@@ -1,3 +1,5 @@
+import apiObj , {getStudent} from '/server/server.js';
+
 document.getElementById('togglePassword').addEventListener('click' , () => 
 {
     document.getElementById('togglePassword').classList.toggle('bi-eye');
@@ -52,6 +54,10 @@ document.getElementById('loginButton').addEventListener('click' , () => {
     document.getElementById('emailError').innerHTML === "" 
     )
     {
+        if(!apiObj['student'])
+        {
+            getStudent(document.getElementById('emailInput').value , document.getElementById('passwordInput').value)
+        }
         // LOGIN THE USER HERE
     }
 
