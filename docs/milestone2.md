@@ -23,22 +23,22 @@ We will also implement a store so that we don't call the APIs that we have alrea
 
 ## Client Interface
 
-![login](wireframes/login.png)
+![login](impl/login.png)
 
 
 The above image shows the login page. Users can log in to their test-It account here. We have also done form validation here as well. Both the Email and Password fields cannot be empty when trying to login,
 users having a valid UMass email can use test-it, and Password should be at least 6 characters long and must have an uppercase character and a number.
 
-![signup](wireframes/signup.png)
+![signup](impl/signup.png)
 
 The above images show the signup page. Users (both instructors and students) can create new accounts here. We have form validation here as well similar to the login page. We also have a new field called Phone. We recommend users add their phone numbers as this will enable secure authentication and help them in forgot passwords. We are also planning to add new fields so we know more about the user like grade , number of credits, etc.
 
-![dashboard](wireframes/dash.png)
+![dashboard](impl/dash.png)
 
 
 The above page shows the dashboard for a particular class ( here CS 326 ). On the left side, we can see all the tests for homework in that class (currently 1), and on the right side is the leaderboard. The leaderboard shows students that have the best test cases for that homework. 
 
-![profile](wireframes/profile.png)
+![profile](impl/profile.png)
 
 The above page shows the profile page. On the left side, we show the student's details and their overall stats and current stats. We collect these stats when the user enrolls in a class. We also show some badges on top, we provide these ourselves checking the leaderboard stats of all the classes the user is currently in. The right side shows a list of all their test cases from all the classes they have taken. We haven’t included images in this implementation as we are still checking if the DB will support images or not, but the main structure should not change. 
 
