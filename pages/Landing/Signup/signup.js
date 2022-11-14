@@ -1,3 +1,5 @@
+import apiObj , {createInstructor , createStudent} from '/server/server.js'
+
 document.getElementById('togglePassword').addEventListener('click' , () => 
 {
     document.getElementById('togglePassword').classList.toggle('bi-eye');
@@ -71,6 +73,15 @@ document.getElementById('signupButton').addEventListener('click' , () => {
     document.getElementById('phoneError').innerHTML === ""
     )
     {
+        if(document.getElementById('Instructor').checked)
+        {
+            createInstructor(document.getElementById('emailInput').value)
+        }
+        else
+        {
+            createStudent(document.getElementById('emailInput').value)
+        }
+        location.href="/pages/Dashboard/Assignment/assignment.html"
         // SIGN UP USER HERE
     }
 
