@@ -26,7 +26,7 @@ app.post('/createTestCase', (req, res) => {
     res.json({id: 'ID', name: 'test name', project: 'ID2', student: '1234'});
 });
 
-app.use('/components/appNavbar/', express.static('components/appNavBar'));
+app.use('/components/appNavbar/', express.static('components/appNavbar'));
 app.use('/components/loginNavbar/', express.static('components/loginNavbar'));
 app.use('/constants/images/', express.static('constants/images'));
 
