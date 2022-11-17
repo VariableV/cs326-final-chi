@@ -27,6 +27,9 @@ app.post('/createTestCase', (req, res) => {
 });
 
 app.use('/components/appNavbar/', express.static('components/appNavBar'));
+app.use('/components/loginNavbar/', express.static('components/loginNavbar'));
+app.use('/constants/images/', express.static('constants/images'));
+
 
 app.use('/profile', express.static('pages/Profile'));
 app.use('/signup', express.static('pages/Landing/Signup'));
