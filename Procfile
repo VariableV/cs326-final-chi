@@ -1,1 +1,1 @@
-web: node expserver.js
+web: node expserver.mjs

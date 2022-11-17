@@ -1,4 +1,5 @@
-const express = require('express');
+import apiObj , {getStudent , getInstructor , createStudent , createInstructor} from './server/store.js'
+import express from 'express'
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -26,12 +27,14 @@ app.post('/createTestCase', (req, res) => {
     res.json({id: 'ID', name: 'test name', project: 'ID2', student: '1234'});
 });
 
-app.use('/components/appNavbar/', express.static('components/appNavbar'));
+
+
+app.use('/components/appNavbar/', express.static('components/appNavBar'));
 app.use('/components/loginNavbar/', express.static('components/loginNavbar'));
 app.use('/constants/images/', express.static('constants/images'));
 
-
-app.use('/profile', express.static('pages/Profile'));
+app.use('/', !apiObj['student'] && !apiObj['instructor'] ? express.static('pages/Landing/Login') : express.static('pages/Dashboard/Assignment'))
+apiObj['student'] && app.use('/profile', express.static('pages/Profile'));
 app.use('/signup', express.static('pages/Landing/Signup'));
 app.use('/login', express.static('pages/Landing/Login'));
 app.use('/assignment', express.static('pages/Dashboard/Assignment'));
