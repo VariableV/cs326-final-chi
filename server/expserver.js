@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 /*
 /getStudent (GET) - this endpoint will be used during login when a student logs into their test it account. This will return students’ information, and their classes. This will help us populate the profile and part of the dashboard frontend.
