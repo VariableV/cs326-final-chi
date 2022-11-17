@@ -49,8 +49,15 @@ https://final-team-chi.herokuapp.com/
 
 ## Division Of Labor
 
-Kanishk - worked on login, and signup pages.
+Kanishk -  worked on login, and signup pages.
+Files worked on -
+login.html, login.css, login.js, signup.html, signup.css, signup.js, server.js, appNavbar.js, appNavbar.css, loginNavbar.js, loginNavbar.css
 
 Maheen - worked on the dashboard page.
+Files worked on - 
+assignment.html, assignment.css
 
 Daniel - worked on the profile page
+Files worked on-
+student_profile.html, student_profile.css
+
