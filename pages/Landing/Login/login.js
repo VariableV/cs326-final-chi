@@ -1,4 +1,7 @@
-import apiObj , {getStudent} from '/server/server.js';
+import apiObj , {getStudent} from '/server/store.js';
+
+
+const storage = window.localStorage;
 
 document.getElementById('togglePassword').addEventListener('click' , () => 
 {
@@ -54,10 +57,10 @@ document.getElementById('loginButton').addEventListener('click' , () => {
     document.getElementById('emailError').innerHTML === "" 
     )
     {
-        if(!apiObj['student'])
-        {
-            getStudent(document.getElementById('emailInput').value , document.getElementById('passwordInput').value)
-        }
+       
+       const userId = apiObj['student']['userId']
+       storage.setItem('id' , userId);
+
         // LOGIN THE USER HERE
     }
 

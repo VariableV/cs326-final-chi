@@ -1,4 +1,4 @@
-import apiObj , {createInstructor , createStudent} from '/server/server.js'
+import apiObj , {createInstructor , createStudent} from '/server/store.js'
 
 document.getElementById('togglePassword').addEventListener('click' , () => 
 {
