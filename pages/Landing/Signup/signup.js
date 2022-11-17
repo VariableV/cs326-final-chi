@@ -81,7 +81,7 @@ document.getElementById('signupButton').addEventListener('click' , () => {
         {
             createStudent(document.getElementById('emailInput').value)
         }
-        location.href="/pages/Dashboard/Assignment/assignment.html"
+        location.href="/assignment"
         // SIGN UP USER HERE
     }
 
