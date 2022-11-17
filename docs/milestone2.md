@@ -6,7 +6,7 @@ The API structure will look as follows.
 
 /getStudent (GET) - this endpoint will be used during login when a student logs into their test it account. This will return students’ information, and their classes. This will help us populate the profile and part of the dashboard frontend.
 
-/createStudent (GET) - this endpoint will be used during signup when a new student signs up for testit. This will add the student to DB and log the user in. 
+/createStudent (POST) - this endpoint will be used during signup when a new student signs up for testit. This will add the student to DB and log the user in. 
 
 /getInstructor (GET) - works similar to /getStudent but this time it returns the instructor's information and classes teaching.
 
@@ -15,7 +15,6 @@ The API structure will look as follows.
 /createClass (POST) - will create a class. An instructor can only do this. This will add the new class to class DB.
 
 /createTestCase (POST) - this will create a new test case in a particular class. A student can only do this. This will update the class DB JSON tree (No SQL)
-
 
 The above APIs could be modified once we actually delve deep into the backend but the structure will be the same. 
 We will also implement a store so that we don't call the APIs that we have already called in that session
