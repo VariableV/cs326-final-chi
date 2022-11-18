@@ -1,7 +1,4 @@
-import apiObj , {getStudent} from '/server/store.js';
-
-
-const storage = window.localStorage;
+import apiObj from '../../../server/store.js'
 
 document.getElementById('togglePassword').addEventListener('click' , () => 
 {
@@ -10,8 +7,6 @@ document.getElementById('togglePassword').addEventListener('click' , () =>
     const type = password.getAttribute("type") === "password" ? "text" : "password";
     password.setAttribute("type", type);
 })
-
-
 
 
 document.getElementById('loginButton').addEventListener('click' , () => {
@@ -59,7 +54,7 @@ document.getElementById('loginButton').addEventListener('click' , () => {
     {
        
        const userId = apiObj['student']['userId']
-       storage.setItem('id' , userId);
+       window.localStorage.setItem('id' , userId);
 
         // LOGIN THE USER HERE
     }
