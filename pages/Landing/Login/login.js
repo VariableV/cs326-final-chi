@@ -1,4 +1,4 @@
-import apiObj from '../../../server/store.js'
+// import apiObj from '../../../server/store.js'
 
 document.getElementById('togglePassword').addEventListener('click' , () => 
 {
@@ -53,10 +53,10 @@ document.getElementById('loginButton').addEventListener('click' , () => {
     )
     {
        
-       const userId = apiObj['student']['userId']
-       window.localStorage.setItem('id' , userId);
-
-        // LOGIN THE USER HERE
+    //    const userId = apiObj['student']['userId']
+    //    window.localStorage.setItem('id' , userId);
+    fetch('/getStudent').then(res => res.json())
+    //    LOGIN THE USER HERE
     }
 
 
