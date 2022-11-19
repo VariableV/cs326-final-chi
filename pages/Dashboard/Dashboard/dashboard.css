@@ -14,6 +14,7 @@ li
     list-style: none;
 }
 
+
 .navbar 
 {
     display: flex;
@@ -85,9 +86,36 @@ li
     
   }
 
+#createAssignmentModal
+{
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */  
+}
+
+  .assignment-modal-content
+  {
+    background-color: #fefefe;
+    margin: 10% auto; /* 15% from the top and centered */
+    padding: 30 20px;
+    border-radius: 8px;
+    border: 1px solid #888;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 30%; 
+    height: 55%;
+    align-items: center;
+  }
+
   input
 {
-    width: 70%; 
+    width: 50%; 
     height: 35px; 
     border-radius: 10px; 
     border-width: 2px; 

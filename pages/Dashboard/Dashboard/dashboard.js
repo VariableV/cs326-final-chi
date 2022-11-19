@@ -74,6 +74,11 @@ document.getElementById('addEnroll').addEventListener('click' , () =>
     document.getElementById('addCourseModal').style.display = "block"
 })
 
+document.getElementById('createAssignment').addEventListener('click' , () => 
+{
+    document.getElementById('createAssignmentModal').style.display = "block"
+})
+
 
 document.getElementById('classNameArrow').addEventListener('click' , () => {
 
@@ -118,13 +123,20 @@ document.getElementById('dueDateArrow').addEventListener('click' , () => {
    
 })
 
+document.getElementById('assignmentCancel').addEventListener('click' , () => 
+{
+    document.getElementById('createAssignmentModal').style.display = "none";   
+})
+
+
 document.getElementById('classCancel').addEventListener('click' , () => 
 {
-    document.getElementById('addCourseModal').style.display = "none"
+    document.getElementById('addCourseModal').style.display = "none";   
 })
 
 document.getElementById('classEnroll').addEventListener('click' , () => 
 {
     //add new class to studentDetails.clases
     document.getElementById('addCourseModal').style.display = "none"
+    
 })
