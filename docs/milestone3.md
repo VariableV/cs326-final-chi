@@ -1,5 +1,5 @@
 ## Database Documentation
-```json
+```
 user document {
     _id: <ObjectId>, // unique id for user
     email: String, // email for user
