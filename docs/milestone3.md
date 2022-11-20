@@ -27,8 +27,16 @@ class document {
     instructor: String, // teacher name
     size: Integer // size of class
 }
+
+assignment document {
+    _id: <ObjectId>, // unique id for assignment
+    name: String, // name for assignment
+    release: Date, // release date for assignment
+    due: Date // due date for assignment
+}
 ```
 
 ## Division of Labor
 Maheen - 
+
 Kanishk -
