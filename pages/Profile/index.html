@@ -1,16 +1,10 @@
-<!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="../../../components/appNavbar/appNavbar.css" />
-        <link
-            href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
-            rel="stylesheet"
-        />
-        <link
-            href="https://fonts.googleapis.com/css?family=Poppins&display=swap"
-            rel="stylesheet"
-        />
+        <title>Profile</title>
+        <script type="module" src="./student_profile.js" defer></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
         <link rel="stylesheet" href="student_profile.css" />
+     
     </head>
     <body>
         <nav class="navbar">
@@ -22,162 +16,77 @@
             <ul class="nav-links">
                 <div class="menu">
                     <li>
-                        <a href="/">
+                        <a href="/dashboard">
                             <div style="background-color: white; color: black; padding:8 45" id="navButton">
-                                Profile
+                                Dashboard
                             </div>
                         </a>
                     </li>
                 </div>
             </ul>
         </nav>
-        <div class="parent">
-            <div class="student">
-                <div class="v141_554">
-                    <div class="v141_555"></div>
-                </div>
-                <div class="v141_556">
-                    <span class="v141_557">Daniel Yu</span>
-                    <div class="v141_558"></div>
-                </div>
-                <div class="v141_559">
-                    <span class="v141_560">Undergraduate 2023</span>
-                    <div class="v141_561"></div>
-                </div>
-                <div class="superlatives">
-                    <div class="v141_563"></div>
-                    <div class="v141_564"></div>
-                    <div class="v141_565"></div>
-                    <div class="v141_566"></div>
-                    <div class="v141_567"></div>
-                    <span class="v141_568">Ranker</span>
-                    <span class="v141_569">Mr. Popular</span>
-                    <span class="v141_570">Witcher Reader</span>
-                    <span class="v141_571">Been #1</span>
-                    <span class="v141_572">5 Year Veteran</span>
-                </div>
-            </div>
-            <span class="v141_573">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodont
-            </span>
-            <span class="v141_574">Joined October 9th</span>
-            <div class="name"></div>
-            <div class="v141_577">
-                <div class="v141_578"></div>
-                <div class="v141_579">
-                    <span class="v141_580">Dashboard</span>
-                </div>
-                <div class="v141_581">
-                    <div class="name"></div>
-                </div>
-                <div class="v141_583"></div>
-            </div>
-            <div class="v141_584">
-                <span class="v141_585">70%</span>
-                <span class="v141_586">AVERAGE COVERAGE</span>
-            </div>
-            <div class="v141_587">
-                <span class="v141_588">17</span>
-                <span class="v141_589">CLASSES TAKEN</span>
-            </div>
-            <div class="v141_590">
-                <span class="v141_591">4</span>
-                <span class="v141_592">SEMESTER CLASSES</span>
-            </div>
-            <div class="v141_593">
-                <span class="v141_594">72</span>
-                <span class="v141_595">AVERAGECLASS SIZE</span>
-            </div>
-            <div class="v141_596">
-                <span class="v141_597">41</span
-                ><span class="v141_598">AVERAGE TEST VIEWS</span>
-            </div>
-            <div class="v141_599">
-                <span class="v141_600">23</span
-                ><span class="v141_601">AVERAGE RANK</span>
-            </div>
-            <div class="v141_806">
-                <div class="name"></div>
-                <div class="v141_808">
-                    <div class="v141_809"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <span class="v141_812">SCRABBLEUTILS</span>
-                    <span class="v141_813">CS - 326</span>
-                    <div class="v141_814">
-                        <span class="v141_815">103</span>
-                        <div class="v141_816"></div>
-                        <div class="v141_817"></div>
-                        <span class="v141_818">90</span
-                        ><span class="v141_819">%</span
-                        ><span class="v141_820">30</span
-                        ><span class="v141_821">23 </span>
-                        <div class="v141_822"></div>
+
+        <div style="padding:30px;display: flex; justify-content: space-between;">
+
+            <div id ="editProfileModal">
+                <div class="modal-content">
+                    <h2 style="font-weight: 550; text-align: center;">Edit your Profile</h2>
+                    <div style ="width: 100%; margin-bottom: 20px;">
+                        <p style="color: gray;font-size:12px; text-align: center;">Tell us more about yourself!</p>
                     </div>
-                    <div class="v141_823"></div>
-                    <div class="v141_824"></div>
-                    <div class="v141_825"></div>
-                    <div class="v141_826"></div>
-                    <div class="v141_827"></div>
-                </div>
-            </div>
-            <div class="v141_828">
-                <div class="name"></div>
-                <div class="v141_830">
-                    <div class="v141_831"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <span class="v141_834">LINEAR PROBING</span>
-                    <span class="v141_835">CS - 187</span>
-                    <div class="v141_836">
-                        <span class="v141_837">167</span>
-                        <div class="v141_838"></div>
-                        <div class="v141_839"></div>
-                        <span class="v141_840">45</span>
-                        <span class="v141_841">%</span>
-                        <span class="v141_842">130</span>
-                        <span class="v141_843">68</span>
-                        <div class="v141_844"></div>
+                    <div style="margin-bottom: 10px; align-items: center;">
+                        <p style="width: 140px">Name</p>
+                        <input id = "nameInput" type="text">
+                        
                     </div>
-                    <div class="v141_845"></div>
-                    <div class="v141_846"></div>
-                    <div class="v141_847"></div>
-                    <div class="v141_848"></div>
-                </div>
-                <div class="v141_849"></div>
-            </div>
-            <div class="v141_850">
-                <div class="v141_851"></div>
-                <div class="v141_852"></div>
-                <div class="v141_853"></div>
-            </div>
-            <div class="v141_854">
-                <div class="name"></div>
-                <div class="v141_856"></div>
-                <div class="v141_857">
-                    <div class="v141_858"></div>
-                    <div class="name"></div>
-                    <div class="name"></div>
-                    <span class="v141_861">IS PALINDROME</span>
-                    <span class="v141_862">CS - 311</span>
-                    <div class="v141_863">
-                        <span class="v141_864">201</span>
-                        <div class="v141_865"></div>
-                        <div class="v141_866"></div>
-                        <span class="v141_867">100</span>
-                        <span class="v141_868">%</span>
-                        <span class="v141_869">16</span>
-                        <span class="v141_870">1</span>
-                        <div class="v141_871"></div>
+                    <div  style="margin-bottom: 10px ; align-items: center;">
+                        <p style="width: 140px";>Email</p>
+                        <input id="emailInput" type="text" style="color: gray;" readonly>
                     </div>
-                    <div class="v141_872"></div>
-                    <div class="v141_873"></div>
-                    <div class="v141_874"></div>
+                    <div style="margin-bottom: 10px ; align-items: center;">
+                        <p style="width: 140px;">Bio</p>
+                        <textarea id="bioInput" rows="4" cols="50"></textarea>
+                    </div>
+                    <p style="color: gray;font-size:12px;position: relative; bottom: 5;">Tell us about yourself. Why do you want to be a programmer ? Do you even like writing tests ? etc.</p>
+                    
+                    <div style="display: flex; justify-content: center; margin-top: 10px;">
+                        <button id="Submit" style ="cursor: pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(8, 92, 8);">Submit</button>
+                        <button id ="Cancel" style="cursor:pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(126, 15, 15);">Cancel</button>
+                    </div>
+                   
                 </div>
             </div>
+
+            
+            <div id = "firstHalf">
+                <div id = "details">
+                    <h1>Kanishk Chaudhary</h1>
+                    <h3 id="studentEmailField" style="color:rgb(74, 74, 74);margin-top: 5px; font-weight: 500; font-size: 16px;"></h3>
+                    <h5 id = "studentBioField" style="color:rgb(95, 95, 95);margin-top: 5px;font-weight:500 ;"></h5>
+                    <h6 id = "studentJoinedField" style="color:gray;margin-top: 5px;font-weight:600 ;"></h6>
+                </div>
+                
+                <div id ="studentStats">
+                </div>
+
+                <div>
+                    <button id ="profileButton">
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
+
+            <div id ="secondHalf">
+                <div id = "testCases" style="overflow-y: scroll; ">
+
+                </div>
+
+            </div>
+            
         </div>
+
+
+
+
     </body>
 </html>

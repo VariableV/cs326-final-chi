@@ -1,7 +1,7 @@
 let studentDetails = {};
 let assignmentDetails = [];
 studentDetails = await (await fetch('/getStudent')).json()
-let assignment = await (await fetch('/getAssignment')).json()
+let assignment = await (await fetch('/getClass')).json()
 assignmentDetails.push(assignment)
 
 const classes = document.getElementById('classes');
