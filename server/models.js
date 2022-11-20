@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 
 const assignmentDoc = new Schema({
     name: String, // name for assignment
+    class: String, // class that assignment is in
     release: Date, // release date for assignment
     due: Date // due date for assignment
 });

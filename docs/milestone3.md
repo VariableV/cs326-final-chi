@@ -31,6 +31,7 @@ class document {
 assignment document {
     _id: <ObjectId>, // unique id for assignment
     name: String, // name for assignment
+    class: String, // class that assignment belongs to
     release: Date, // release date for assignment
     due: Date // due date for assignment
 }

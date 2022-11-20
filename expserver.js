@@ -17,16 +17,6 @@ const port = process.env.PORT || 3000;
 // 3DBs , Classes
 app.use(express.json());
 
-app.get('/getStudent', (req, res) => {
-    res.json({
-        email: 'student@test.gov',
-        classes: ['COMPSCI 446', 'COMPSCI 187', 'COMPSCI 326'],
-        testCases: [{ name: 'Linear Probing', className: 'COMPSCI 326', coverage: 56, assignment: 'P4' },
-        { name: 'Alpha Beta Pruning', className: 'COMPSCI 326', coverage: 40, assignment: 'P6' },
-        { name: 'Palindrome', className: 'COMPSCI 326', coverage: 100, assignment: 'HW1' },
-        { name: 'Anagram Solver', className: 'COMPSCI 326', coverage: 78, assignment: 'Project' },]
-    });
-});
 
 app.post('/createStudent', async (req, res) => {
     if (!req.body) {
@@ -36,6 +26,8 @@ app.post('/createStudent', async (req, res) => {
         email: req.body.email,
         studentAccount: true,
         classes: [],
+        name:'',
+        bio:'',
         joined: new Date()
     })
 
@@ -48,25 +40,6 @@ app.post('/createStudent', async (req, res) => {
     }
 });
 
-app.get('/getInstructor', (req, res) => {
-    if (!req.body) {
-        return;
-    }
-
-    User.findOne({ email: req.body.email, studentAccount: false }).then(res => {
-        res.json({ id: res["_id"], email: res["email"], classes: res["classes"] });
-    });
-});
-
-app.get('/getAssignments', (req, res) => {
-    if (!req.body) {
-        return;
-    }
-    Assignment.find({ email: req.body.email }).then(res => {
-        res.json({ ans: res })
-    })
-});
-
 
 app.post('/createInstructor', async (req, res) => {
     if (!req.body) {
@@ -76,6 +49,8 @@ app.post('/createInstructor', async (req, res) => {
         email: req.body.email,
         studentAccount: false,
         classes: [],
+        name: '',
+        bio:'',
         joined: new Date()
     })
 
@@ -102,13 +77,129 @@ app.post('/createClass', (req, res) => {
     });
 });
 
+
 app.post('/createAssignment', (req, res) => {   // creates assignemnt in class need a class 
-    res.json({ id: 'ID1', name: 'COMPSCI 326', instructors: ['23'] });
+
+    if (!req.body) {
+        res.send(400);
+        return;
+    }
+    // can use className as id
+    Assignment.insertMany({ 'name': req.body.name, 'className': req.body.class,'release': new Date(), 'dueDate': new Date(req.body.dueDate) }).then(res => {
+        Class.findOne({name: req.body.class }).then((ans) => {
+            ans["classes"].push(req.body.req.body.name)
+            ans.save()
+        })
+    });
 });
 
 app.post('/createTestCase', (req, res) => {
-    res.json({ id: 'ID', name: 'test name', project: 'ID2', student: '1234' });
+
+    if (!req.body) {
+        res.send(400);
+        return;
+    }
+
+    Test.insertMany({
+        name: req.body.name, 
+        student: req.body.email,
+        class: req.body.class, 
+        assignment: req.body.assignment, // assignment test is associated with
+        coverage: Math.floor(Math.random() * 101), // percent coverage
+        code: req.body.code // block of code for a test
+
+    })
+
+    res.send(200)
+   
 });
+
+app.post('/updateUser', (req, res) => {
+    
+    if (!req.body) {
+        res.send(400);
+        return;
+    }
+    User.updateOne({email:req.body.email} , {'name' : req.body.name , 'bio' :req.body.bio})
+
+});
+
+
+app.get('/getStudent', (req, res) => {
+    if(!req.body)
+    {
+        res.send(400)
+        return;
+    }
+
+    let email = ""
+    let classes = [];
+    let testCases = [];
+    
+    User.findOne({
+        $and: [
+          {
+            "email": req.body.email
+          },
+          {
+            "studentAccount": true
+          }
+        ]
+    }).then((res) => 
+    {
+        classes = res['classes']
+        email = res['email']
+
+        Test.findOne({'email' : req.body.email}).then((res) => {
+           testCases = res;
+        })
+    })
+
+    res.json({
+        'email': email,
+        'classes': classes,
+        'testCases': testCases
+    });
+});
+
+
+app.get('/getInstructor', (req, res) => {
+    if (!req.body) {
+        return;
+    }
+
+    User.findOne({ email: req.body.email, studentAccount: false }).then(res => {
+        res.json({ id: res["_id"], email: res["email"], classes: res["classes"] });
+    });
+});
+
+app.get('/getAssignments', (req, res) => { //plural , used to populate table in student's dashboard
+    if (!req.body) {
+        return;
+    }
+    Assignment.find({ email: req.body.email }).then(res => {
+        res.json({ ans: res })
+    })
+});
+
+app.get('/getAssignment', (req, res) => { //singular , used for the assignment page , need class and assignmentName
+    if (!req.body) {
+        return;
+    }
+    Assignment.find({
+        $and: [
+          {
+            "name": req.body.name
+          },
+          {
+            "class": req.body.class
+          }
+        ]
+    }).then(res => {
+        res.json({ 'result': res })
+    })
+});
+
 
 
 

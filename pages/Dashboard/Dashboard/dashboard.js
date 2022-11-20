@@ -40,6 +40,18 @@ function addClassesToDiv()
 
 }
 
+function addClassesToSelect()
+{
+    document.getElementById('classSelect').innerHTML = ""
+    for(let i = 0; i<studentDetails.classes.length;i++)
+    {
+        const option = document.createElement('option');
+        option.innerHTML = studentDetails.classes[i]
+
+        document.getElementById('classSelect').appendChild(option)
+    }
+}
+
 function addAssignmentsToDiv()
 {
     document.getElementById('assignments').innerHTML = ""
@@ -68,6 +80,7 @@ function addAssignmentsToDiv()
 
 addClassesToDiv()
 addAssignmentsToDiv()
+addClassesToSelect();
 
 document.getElementById('addEnroll').addEventListener('click' , () => 
 {
