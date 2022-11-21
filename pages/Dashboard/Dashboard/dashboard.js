@@ -7,6 +7,7 @@ studentDetails = await (await fetch(`/getUser/${window.localStorage.getItem('ema
 document.getElementById('dashboard').innerHTML = studentDetails['name'] !== '' ? `${studentDetails['name']}'s Dashboard` : `${studentDetails['email'].substring(0,studentDetails['email'].indexOf("@"))}'s Dashboard`;
 document.getElementById('email').innerHTML = studentDetails['email']
 document.getElementById('instructor').innerHTML = studentDetails['studentAccount'] ? 'Student' : 'Instructor'
+document.getElementById('createAssignment').style.display = studentDetails['studentAccount'] ? 'none' : 'block'
 const isStudent = studentDetails['studentAccount']
 
 async function getAssignments()
