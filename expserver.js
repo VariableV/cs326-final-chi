@@ -178,6 +178,7 @@ app.get('/getStudent/:email/', (req, res) => {
     let bio = ''
     let joined = ''
 
+
     User.findOne({
         $and: [
             {
@@ -211,6 +212,57 @@ app.get('/getStudent/:email/', (req, res) => {
 
 });
 
+
+app.get('/getUser/:email', (req , res) => 
+{
+    let name = ''
+    let email = ""
+    let classes = [];
+    let testCases = [];
+    let bio = ''
+    let joined = ''
+
+    User.findOne({"email": req.params['email']
+        
+    }).then((res2) => {
+        console.log(res2)
+        classes = res2['classes']
+        email = res2['email']
+        name = res2['name']
+        bio = res2['bio']
+        joined = res2['joined']
+
+        if(res2['studentAccount'])
+        {
+
+            Test.findOne({ 'email': req.params['email'] }).then((res) => {
+                testCases = res;
+            })
+
+            res.json({
+                'name': name,
+                'bio': bio,
+                'email': email,
+                'classes': classes,
+                'testCases': testCases,
+                'joined' : joined,
+                'studentAccount': res2['studentAccount']
+            });
+        }
+        else
+        {
+            res.json({
+                'name': name,
+                'bio': bio,
+                'email': email,
+                'classes': classes,
+                'testCases': testCases,
+                'joined' : joined,
+                'studentAccount': res2['studentAccount']
+            });
+        }
+    })
+})
 
 app.get('/getInstructor', (req, res) => {
     if (!req.body) {

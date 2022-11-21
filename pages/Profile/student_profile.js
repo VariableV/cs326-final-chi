@@ -1,5 +1,5 @@
 let studentDetails = {}
-studentDetails = await (await fetch(`/getStudent/${window.localStorage.getItem('email')}`)).json()
+studentDetails = await (await fetch(`/getUser/${window.localStorage.getItem('email')}`)).json()
 
 const classDetails = {}
 let avgClassSize = 0
@@ -40,14 +40,21 @@ function classDeets()
 classDeets().then((res) => 
 {
 
-    const studentStats = [{title:'Class Taken' , value: studentDetails['classes'].length} ,
+    const studentStats = studentDetails['studentAccount'] ? [{title:'Class Taken' , value: studentDetails['classes'].length} ,
     {title:'Semester Classes' , value:studentDetails['classes'].length},
     {title:'Average Class Size' , value:avgClassSize}, 
     {title:'Average Coverage' , value: studentDetails['avgCoverage'] ? studentDetails['avgCoverage'] : 0 }, 
-    {title:'Average Rank' , value: studentDetails['avgRank'] ? studentDetails['avgRank'] : 0}]
+    {title:'Average Rank' , value: studentDetails['avgRank'] ? studentDetails['avgRank'] : 0}] 
+    : 
+    [{title:'Class Teaching' , value: studentDetails['classes'].length} ,
+    {title:'Current Classes' , value:studentDetails['classes'].length},
+    {title:'Average Class Size' , value:avgClassSize}, 
+    {title:'Submission Ratio' , value:1 }, 
+    ]
 
     const testStats = ['Assignment Name' , 'Class Size' ,  'Coverage' , 'Semester']
 
+    document.getElementById('instructorField').innerHTML = studentDetails['studentAccount'] ? 'Student' : 'Instructor'
     document.getElementById('studentNameField').innerHTML = studentDetails['name'] !== '' ? studentDetails['name'] : studentDetails['email'].substring(0,studentDetails['email'].indexOf("@"))
     document.getElementById('studentEmailField').innerHTML = studentDetails['email']
     document.getElementById('studentBioField').innerHTML = studentDetails['bio']!=='' ? studentDetails['bio'] : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodont '
@@ -139,7 +146,7 @@ const addTests = () =>
     {
         let div = document.createElement('div')
         let empty = document.createElement('p')
-        empty.innerHTML = "YOU HAVE 0 PUBLISHED TESTS"
+        empty.innerHTML = studentDetails['studentAccount'] ?  "YOU HAVE 0 PUBLISHED TESTS" : "YOU HAVE 0 ASSIGNMENTS"
         empty.style.marginTop= 20
         empty.style.marginBottom= 15
         empty.style.fontWeight = 550
