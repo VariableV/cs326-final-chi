@@ -2,8 +2,9 @@ import apiObj, { getStudent, getInstructor, createStudent, createInstructor } fr
 import express from 'express';
 import { connect } from 'mongoose';
 import { Assignment, User, Test, Class } from './server/models.js';
-
-const url = 'mongodb://127.0.0.1:27017';
+import dotenv from "dotenv"
+dotenv.config()
+const url = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017';
 
 connect(url);
 
@@ -45,21 +46,14 @@ app.post('/createStudent', async (req, res) => {
         joined: new Date(),
         password: req.body.password
     })
-    const count = await User.find({ email: req.body.email }).count()
-    if (count) {
-        try {
-            const dataToSave = await data.save();
-            res.status(200).json(dataToSave)
-        }
-        catch (error) {
-            res.status(400).json({ message: error.message })
-        }
+    try {
+        const dataToSave = await data.save();
+        res.status(200).json(dataToSave)
     }
-    else {
-        res.send(500)
+    catch (error) {
+        res.status(400).json({ message: error.message })
     }
 });
-
 
 app.post('/createInstructor', async (req, res) => {
     if (!req.body) {
@@ -74,20 +68,14 @@ app.post('/createInstructor', async (req, res) => {
         joined: new Date(),
         password: req.body.password
     })
-    const count = await User.find({ email: req.body.email }).count()
-    if (count) {
+    try {
+        const dataToSave = await data.save();
+        res.status(200).json(dataToSave)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
 
-        try {
-            const dataToSave = await data.save();
-            res.status(200).json(dataToSave)
-        }
-        catch (error) {
-            res.status(400).json({ message: error.message })
-        }
-    }
-    else {
-        res.send(500)
-    }
 });
 
 app.post('/createClass', async (req, res) => {
