@@ -26,6 +26,7 @@ class document {
     assignments: Array<String>, // unique assignments in class
     instructor: String, // teacher name
     size: Integer // size of class
+    enrollCode: String // required for enrolling in a class, must be provided by an instructor.
 }
 
 assignment document {

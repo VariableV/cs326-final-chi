@@ -11,7 +11,8 @@ const classDoc = new Schema({
     name: { required: true, type: String }, // name for class
     assignments: { required: true, type: [String] }, // unique assignments in class
     instructor: { required: true, type: String }, // teacher name
-    size: Number  // size of class
+    size: Number , // size of class
+    enrollCode:{ required: true, type: String }, // required for enrolling in the class
 });
 
 const testDoc = new Schema({
@@ -29,7 +30,8 @@ const userDoc = new Schema({
     bio: { required: false, type: String }, // bio of user, optional field
     studentAccount: { required: true, type: Boolean }, // True for student, False for Teacher
     classes: { required: true, type: [String] }, // classes teaching or enrolled in
-    joined: { required: true, type: Date }// join date
+    joined: { required: true, type: Date },// join date
+    password:{required: true, type:String} // hashed password
 });
 
 export const Assignment = model('Assignment', assignmentDoc)

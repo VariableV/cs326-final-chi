@@ -55,8 +55,20 @@ document.getElementById('loginButton').addEventListener('click' , () => {
        
     //    const userId = apiObj['student']['userId']
     //    window.localStorage.setItem('id' , userId);
-    fetch('/getStudent').then(res => res.json())
+    //    fetch('/getStudent').then(res => res.json())
     //    LOGIN THE USER HERE
+
+    fetch("/createStudent", {
+        method: "post",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'email': email,
+          'password' : crypto.createHash('sha256').update(password).digest('hex')
+        })
+      }).then(res => res.json()).then(res => res.found ? location.href="/dashboard" : document.getElementById('passwordError').innerHTML === "Invalid Credentials")
     }
 
 

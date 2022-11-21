@@ -18,6 +18,24 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 
+app.post('/loginUser') , (req,res) => 
+{
+    if (!req.body) {
+        return;
+    }
+
+    if(User.find({email:req.body.email , password:req.body.password}).count())
+    {
+        res.json({found:true})
+    }
+    else
+    {
+        res.json({found:false})
+    }
+
+    res.send(200)
+}
+
 app.post('/createStudent', async (req, res) => {
     if (!req.body) {
         return;
@@ -28,15 +46,24 @@ app.post('/createStudent', async (req, res) => {
         classes: [],
         name:'',
         bio:'',
-        joined: new Date()
+        joined: new Date(),
+        password:req.body.password
     })
 
-    try {
-        const dataToSave = await data.save();
-        res.status(200).json(dataToSave)
+    if(User.find({email:req.body.email}).count())
+    {
+
+        try {
+            const dataToSave = await data.save();
+            res.status(200).json(dataToSave)
+        }
+        catch (error) {
+            res.status(400).json({ message: error.message })
+        }
     }
-    catch (error) {
-        res.status(400).json({ message: error.message })
+    else
+    {
+        res.send(500)
     }
 });
 
@@ -51,15 +78,24 @@ app.post('/createInstructor', async (req, res) => {
         classes: [],
         name: '',
         bio:'',
-        joined: new Date()
+        joined: new Date(),
+        password:req.body.password
     })
 
-    try {
-        const dataToSave = await data.save();
-        res.status(200).json(dataToSave)
+    if(User.find({email:req.body.email}).count())
+    {
+
+        try {
+            const dataToSave = await data.save();
+            res.status(200).json(dataToSave)
+        }
+        catch (error) {
+            res.status(400).json({ message: error.message })
+        }
     }
-    catch (error) {
-        res.status(400).json({ message: error.message })
+    else
+    {
+        res.send(500)
     }
 });
 
@@ -120,46 +156,54 @@ app.post('/updateUser', (req, res) => {
         res.send(400);
         return;
     }
-    User.updateOne({email:req.body.email} , {'name' : req.body.name , 'bio' :req.body.bio})
+
+    User.updateOne({email:req.body.email} ,{ $set: {'name' : req.body.name , 'bio' :req.body.bio}}).catch(err => console.log(err))
+
+    res.send(200)
 
 });
 
 
-app.get('/getStudent', (req, res) => {
-    if(!req.body)
-    {
-        res.send(400)
-        return;
-    }
-
+app.get('/getStudent/:email/', (req, res) => {
+    
+    let name = ''
     let email = ""
     let classes = [];
     let testCases = [];
+    let bio = ''
+    let joined = ''
     
     User.findOne({
         $and: [
           {
-            "email": req.body.email
+            "email": req.params['email']
           },
           {
             "studentAccount": true
           }
         ]
-    }).then((res) => 
+    }).then((res2) => 
     {
-        classes = res['classes']
-        email = res['email']
+        classes = res2['classes']
+        email = res2['email']
+        name = res2['name']
+        bio = res2['bio']
+        joined = res2['joined']
 
-        Test.findOne({'email' : req.body.email}).then((res) => {
+        Test.findOne({'email' : req.params['email']}).then((res) => {
            testCases = res;
         })
-    })
 
-    res.json({
-        'email': email,
-        'classes': classes,
-        'testCases': testCases
-    });
+        res.json({
+            'name' : name,
+            'bio': bio,
+            'email': email,
+            'classes': classes,
+            'testCases': testCases,
+            'joined' : joined
+        });
+    })  //send name
+
 });
 
 
@@ -173,11 +217,10 @@ app.get('/getInstructor', (req, res) => {
     });
 });
 
-app.get('/getAssignments', (req, res) => { //plural , used to populate table in student's dashboard
-    if (!req.body) {
-        return;
-    }
-    Assignment.find({ email: req.body.email }).then(res => {
+app.get('/getAssignments/:class', (req, res) => { //plural , used to populate table in student's dashboard
+
+
+    Assignment.find({ class : req.params['class'] }).then(res => {
         res.json({ ans: res })
     })
 });

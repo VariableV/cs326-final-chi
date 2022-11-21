@@ -1,19 +1,34 @@
 let studentDetails = {};
 let assignmentDetails = [];
-studentDetails = await (await fetch('/getStudent')).json()
-let assignment = await (await fetch('/getClass')).json()
-assignmentDetails.push(assignment)
 
-const classes = document.getElementById('classes');
+studentDetails = await (await fetch(`/getStudent/${window.localStorage.getItem('email')}`)).json()
+document.getElementById('dashboard').innerHTML = studentDetails['name'] !== '' ? `${studentDetails['name']}'s Dashboard` : `${studentDetails['email'].substring(0,studentDetails['email'].indexOf("@"))}'s Dashboard`;
+document.getElementById('email').innerHTML = studentDetails['email']
+
+
+async function getAssignments()
+{
+    for(let i = 0 ; i< studentDetails['classes'].length ; i++)
+    {
+        let assignment = await (await fetch(`/getAssignments/${studentDetails['classes'][i]}`)).json()
+        assignmentDetails.push(...assignment.ans)
+    }
+    
+}
+
+getAssignments()
+
+// const classes = document.getElementById('classes');
+// 
+
+
+// let assignments = assignmentDetails.map(elem => 
+//         {
+//           return elem['assignments'].map(assignment => { return {'className': elem['className'] , ...assignment}})
+//         })[0]
+
+
 const assignmentDiv = document.getElementById('assignments')
-
-
-let assignments = assignmentDetails.map(elem => 
-        {
-          return elem['assignments'].map(assignment => { return {'className': elem['className'] , ...assignment}})
-        })[0]
-
-
 
 function addClassesToDiv()
 {
@@ -30,6 +45,7 @@ function addClassesToDiv()
         div.appendChild(sem)
         classes.appendChild(div)
     }
+
     const div = document.createElement('div')
     div.classList.add('addEnroll')
     div.id = 'addEnroll'
@@ -54,6 +70,7 @@ function addClassesToSelect()
 
 function addAssignmentsToDiv()
 {
+
     document.getElementById('assignments').innerHTML = ""
     for(let i = 0 ; i<assignments.length;i++)
     {
@@ -73,6 +90,16 @@ function addAssignmentsToDiv()
             div.appendChild(dueAt)
             assignmentDiv.appendChild(div)
 
+    }
+    if(assignmentDetails.length === 0)
+    {
+        let empty = document.createElement('p')
+        empty.innerHTML = "NO ASSIGNMENTS AS OF NOW"
+        empty.style.marginTop= 20
+        empty.style.marginBottom= 15
+        empty.style.fontWeight = 550
+        empty.style.textAlign = 'center'
+        assignmentDiv.appendChild(empty)
     }
 
 }

@@ -1,12 +1,13 @@
 let studentDetails = {}
-studentDetails = await (await fetch('/getStudent')).json()
-const classDetails = {}
+studentDetails = await (await fetch(`/getStudent/${window.localStorage.getItem('email')}`)).json()
 
+const classDetails = {}
 let avgClassSize = 0
 let sumOfStudents = 0
 const studentStatsDiv = document.getElementById('studentStats')
 const testCaseHolder = document.getElementById('testCases')
-
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+console.log(studentDetails)
 
 function classDeets()
 {
@@ -47,9 +48,10 @@ classDeets().then((res) =>
 
     const testStats = ['Assignment Name' , 'Class Size' ,  'Coverage' , 'Semester']
 
+    document.getElementById('studentNameField').innerHTML = studentDetails['name'] !== '' ? studentDetails['name'] : studentDetails['email'].substring(0,studentDetails['email'].indexOf("@"))
     document.getElementById('studentEmailField').innerHTML = studentDetails['email']
-    document.getElementById('studentBioField').innerHTML = studentDetails['bio'] ? studentDetails['bio'] : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodont '
-    document.getElementById('studentJoinedField').innerHTML = studentDetails['Joined'] ? studentDetails['Joined'] : 'October 9th'
+    document.getElementById('studentBioField').innerHTML = studentDetails['bio']!=='' ? studentDetails['bio'] : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodont '
+    document.getElementById('studentJoinedField').innerHTML = studentDetails['joined']!=='' ? `${months[(new Date(studentDetails['joined'])).getMonth()]} ${(new Date(studentDetails['joined'])).getDate()}, ${(new Date(studentDetails['joined'])).getFullYear()}`: 'October 9th'
     document.getElementById('emailInput').value = studentDetails['email']
     document.getElementById('nameInput').value = studentDetails['name'] ? studentDetails['name'] : ''
     document.getElementById('bioInput').innerHTML = studentDetails['bio'] ? studentDetails['bio'] : ''
@@ -132,6 +134,22 @@ const addTests = () =>
         testCaseHolder.appendChild(div)
     }
 
+
+    if(studentDetails['testCases'].length === 0)
+    {
+        let div = document.createElement('div')
+        let empty = document.createElement('p')
+        empty.innerHTML = "YOU HAVE 0 PUBLISHED TESTS"
+        empty.style.marginTop= 20
+        empty.style.marginBottom= 15
+        empty.style.fontWeight = 550
+        empty.style.textAlign = 'center'
+        div.appendChild(empty)
+        div.classList.add('testCase')
+        div.style.backgroundColor='#DFDFDF'
+        testCaseHolder.appendChild(div)
+    }
+
 }
 
     document.getElementById('profileButton').addEventListener('click' , () =>
@@ -142,7 +160,35 @@ const addTests = () =>
     document.getElementById('Cancel').addEventListener('click' , () => 
     {
         document.getElementById('editProfileModal').style.display = "none";   
+    })
+    
+    document.getElementById('Submit').addEventListener('click' , () => 
+    {
+       let newName = document.getElementById('nameInput').value
+       let newBio = document.getElementById('bioInput').value
+
+       fetch("/updateUser", {
+        method: "post",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'email': studentDetails['email'],
+          'name': newName,
+          'bio' : newBio
+        })
+      }).then(res => {
+        studentDetails['name'] = newName;
+        studentDetails['bio'] = newBio;
+
+        document.getElementById('studentNameField').innerHTML = studentDetails['name'] !== '' ? studentDetails['name'] : studentDetails['email'].substring(0,studentDetails['email'].indexOf("@"))
+        document.getElementById('studentBioField').innerHTML = studentDetails['bio'] ? studentDetails['bio'] : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodont '
+        document.getElementById('editProfileModal').style.display = "none";   
+      })
     }) 
+
+    
 
 
     addStats();

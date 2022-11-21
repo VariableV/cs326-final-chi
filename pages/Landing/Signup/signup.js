@@ -1,4 +1,6 @@
 // import apiObj from '../../../server/store.js'
+//import sha256
+
 
 document.getElementById('togglePassword').addEventListener('click' , () => 
 {
@@ -75,14 +77,60 @@ document.getElementById('signupButton').addEventListener('click' , () => {
     {
         if(document.getElementById('Instructor').checked)
         {
-            createInstructor(document.getElementById('emailInput').value)
+            fetch("/createInstructor", {
+                method: "post",
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  'email': email,
+                  'password' : crypto.createHash('sha256').update(password).digest('hex')
+                })
+              }).then((res) => 
+              {
+                if(res.ok)
+                {
+                    window.localStorage.setItem('email' , email)
+                    location.href="/dashboard"
+                }
+                else
+                {
+                    document.getElementById('passwordError').innerHTML = "Email Already Exists, Please Login"
+                }
+                
+              })
+              .catch(error => alert(error.message))
         }
         else
         {
-            createStudent(document.getElementById('emailInput').value)
+            fetch("/createStudent", {
+                method: "post",
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  'email': email,
+                  'password' : password
+                })
+              }).then((res) => 
+              {
+                if(res.ok)
+                {
+                    window.localStorage.setItem('email' , email)
+                    location.href="/dashboard"
+                }
+                else
+                {
+                    document.getElementById('passwordError').innerHTML = "Email Already Exists, Please Login"
+                }
+                
+              })
+              .catch(error => alert(error.message))
         }
-        location.href="/assignment"
-        // SIGN UP USER HERE
+
+        
     }
 
 
