@@ -104,7 +104,7 @@ app.post('/createClass', (req, res) => {
         return;
     }
     // check1 : make sure the person creating class is an instructor
-    Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0 }).then(res => {
+    Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0, assignments:[] ,enrollCode: req.body.code}).then(res => {
         console.log(req.body.email.length)
         User.findOne({ email: req.body.email }).then((ans) => {
             ans["classes"].push(req.body.name)
@@ -163,6 +163,20 @@ app.post('/updateUser', (req, res) => {
 
 });
 
+app.post('/enrollClass' , (req,res) => {
+    // increment the size value of that class
+    let code = req.body.code;
+    let email = req.body.email;
+
+    Class.updateOne({'enrollCode' : code} , {$inc: {'size' : 1}}).then((res) => {
+        User.updateOne({email:email} , {$push:{'classes' : res['name']}})
+    })
+       
+    
+    res.send(200)
+
+})
+
 
 app.get('/getStudent/:email/', (req, res) => {
     
@@ -200,7 +214,8 @@ app.get('/getStudent/:email/', (req, res) => {
             'email': email,
             'classes': classes,
             'testCases': testCases,
-            'joined' : joined
+            'joined' : joined,
+            'studentAccount': res2['studentAccount']
         });
     })  //send name
 

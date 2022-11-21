@@ -28,12 +28,37 @@
                 <div class="modal-content">
                     <h2 style="font-weight: 500;">Enroll via Entry Code</h2>
                     <div style ="width: 100%; margin-bottom: 10px;">
-                        <p style="color: gray;font-size:12px;">Use the 6 digit code your instructor provided to you</p>
+                        <p style="color: gray;font-size:12px;">Use the enroll code your instructor provided to you</p>
                     </div>
                     <input type="text"><br> 
                     <div style="margin-top: 10px">
                         <button id="classSubmit" style ="cursor: pointer; margin-left: auto; padding: 5 15; color:white;background-color: rgb(8, 92, 8);">Submit</button>
                         <button id ="classCancel" style="cursor:pointer;margin-left: auto; padding: 5 15; color:white;background-color: rgb(126, 15, 15);">Cancel</button>
+                    </div>
+                   
+                </div>
+            </div>
+
+            <div id ="createClassModal">
+                <div class="class-modal-content">
+                    <h2 style="font-weight: 550; text-align: center;">Create Class</h2>
+                    <div style ="width: 100%; margin-bottom: 20px;">
+                        <p style="color: gray;font-size:12px; text-align: center;">Create a class for you to post assignments</p>
+                    </div>
+                    <div style="margin-bottom: 10px; align-items: center; display: flex;">
+                        <p style="width: 140px">Class Name</p>
+                        <input id = "nameInput" type="text">
+                        
+                    </div>
+                    <div style="margin-bottom: 10px ; align-items: center; display: flex;">
+                        <p style="width: 140px;">Enroll Code</p>
+                        <input type="text">
+                    </div>
+                    <p style="color: gray;font-size:12px; position: relative; bottom: 5;">The enroll code you provide will be used by the students to enroll in your class</p>
+                    
+                    <div style="display: flex; justify-content: center; margin-top: 10px;">
+                        <button id="createSubmit" style ="cursor: pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(8, 92, 8);">Submit</button>
+                        <button id ="createCancel" style="cursor:pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(126, 15, 15);">Cancel</button>
                     </div>
                    
                 </div>

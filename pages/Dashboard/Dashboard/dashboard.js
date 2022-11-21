@@ -4,7 +4,7 @@ let assignmentDetails = [];
 studentDetails = await (await fetch(`/getStudent/${window.localStorage.getItem('email')}`)).json()
 document.getElementById('dashboard').innerHTML = studentDetails['name'] !== '' ? `${studentDetails['name']}'s Dashboard` : `${studentDetails['email'].substring(0,studentDetails['email'].indexOf("@"))}'s Dashboard`;
 document.getElementById('email').innerHTML = studentDetails['email']
-
+const isStudent = studentDetails['studentAccount']
 
 async function getAssignments()
 {
@@ -111,7 +111,14 @@ addClassesToSelect();
 
 document.getElementById('addEnroll').addEventListener('click' , () => 
 {
-    document.getElementById('addCourseModal').style.display = "block"
+    if(isStudent)
+    {
+        document.getElementById('addCourseModal').style.display = "block"
+    }
+    else
+    {
+        document.getElementById('createClassModal').style.display = "block"
+    }
 })
 
 document.getElementById('createAssignment').addEventListener('click' , () => 
@@ -169,14 +176,36 @@ document.getElementById('assignmentCancel').addEventListener('click' , () =>
 })
 
 
-document.getElementById('classCancel').addEventListener('click' , () => 
+document.getElementById('classCancel').addEventListener('click' , () =>  // enroll code cancel button
 {
     document.getElementById('addCourseModal').style.display = "none";   
 })
 
+document.getElementById('classSubmit').addEventListener('click' , () =>  //enroll code submit button
+{
+
+    fetch("/enrollClass", {
+        method: "post",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'email': email,
+          'password' : crypto.createHash('sha256').update(password).digest('hex')
+        })
+      })
+
+    document.getElementById('addCourseModal').style.display = "none";   
+})
+
+document.getElementById('createCancel').addEventListener('click' , () => 
+{
+    document.getElementById('createClassModal').style.display = "none";   
+})
+
 document.getElementById('classEnroll').addEventListener('click' , () => 
 {
-    //add new class to studentDetails.clases
     document.getElementById('addCourseModal').style.display = "none"
     
 })

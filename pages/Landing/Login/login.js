@@ -66,7 +66,7 @@ document.getElementById('loginButton').addEventListener('click' , () => {
         },
         body: JSON.stringify({
           'email': email,
-          'password' : crypto.createHash('sha256').update(password).digest('hex')
+          'password' : password
         })
       }).then(res => res.json()).then(res => res.found ? location.href="/dashboard" : document.getElementById('passwordError').innerHTML === "Invalid Credentials")
     }
