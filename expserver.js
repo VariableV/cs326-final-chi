@@ -3,7 +3,7 @@ import express from 'express';
 import { connect } from 'mongoose';
 import { Assignment, User, Test, Class } from './server/models.js';
 
-const url = 'mongodb://127.0.0.1:27017';
+const url = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017';
 
 connect(url);
 
