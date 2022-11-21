@@ -89,13 +89,13 @@ app.post('/createClass', async (req, res) => {
             console.log(res)
         })
     
-    // Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0, assignments:[] ,enrollCode: req.body.code}).then(res => {
-    //     User.findOne({ email: req.body.email }).then((ans) => {
-    //         ans["classes"].push(req.body.name)
-    //         ans.save()
-    //         res.status(200)
-    //     })
-    // });
+    Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0, assignments:[] ,enrollCode: req.body.code}).then(res => {
+        User.findOne({ email: req.body.email }).then((ans) => {
+            ans["classes"].push(req.body.name)
+            ans.save()
+            res.status(200)
+        })
+    });
 });
 
 
@@ -218,7 +218,9 @@ app.get('/getInstructor', (req, res) => {
     }
 
     User.findOne({ email: req.body.email, studentAccount: false }).then(res => {
-        res.json({ id: res["_id"], email: res["email"], classes: res["classes"] });
+        res.json({ id: res["_id"], email: res["email"], classes: res["classes"], 'name': name,
+        'bio': bio, 'joined' : joined,
+        'studentAccount': res['studentAccount'] });
     });
 });
 

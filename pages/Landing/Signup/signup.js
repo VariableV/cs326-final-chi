@@ -77,6 +77,7 @@ document.getElementById('signupButton').addEventListener('click' , () => {
     {
         if(document.getElementById('Instructor').checked)
         {
+
             fetch("/createInstructor", {
                 method: "post",
                 headers: {
