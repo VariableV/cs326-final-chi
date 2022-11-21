@@ -39,6 +39,8 @@ assignment document {
 ```
 
 ## Division of Labor
-Maheen - 
+Maheen - Design database schema and connected express endpoints to MongoDB. Worked on login and signup pages, and connected them to the backened.
 
-Kanishk -
+Kanishk - Added more API endpoints and wrote front-end requests to backend. Worked on Dashboard and Profile pages, and connected them to the backend.
+
+Daniel - Nothing

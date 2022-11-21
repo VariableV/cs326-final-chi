@@ -179,6 +179,7 @@ document.getElementById('assignmentCancel').addEventListener('click' , () =>
 document.getElementById('classCancel').addEventListener('click' , () =>  // enroll code cancel button
 {
     document.getElementById('addCourseModal').style.display = "none";   
+    document.getElementById('studentEnrollCode').style.borderColor='black'
 })
 
 document.getElementById('classSubmit').addEventListener('click' , () =>  //enroll code submit button
@@ -187,20 +188,40 @@ document.getElementById('classSubmit').addEventListener('click' , () =>  //enrol
     fetch("/enrollClass", {
         method: "post",
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
         body: JSON.stringify({
-          'email': email,
-          'password' : crypto.createHash('sha256').update(password).digest('hex')
+          'email': studentDetails['email'],
+          'code' : document.getElementById('studentEnrollCode').value
         })
-      })
+      }).then(res =>  {
+        res.ok ? document.getElementById('addCourseModal').style.display = "none" : document.getElementById('studentEnrollCode').style.borderColor='red'})
 
-    document.getElementById('addCourseModal').style.display = "none";   
+   
 })
 
-document.getElementById('createCancel').addEventListener('click' , () => 
+document.getElementById('createCancel').addEventListener('click' , () =>  // cancel button of create class modal
 {
+    document.getElementById('createClassModal').style.display = "none";   
+})
+
+document.getElementById('createSubmit').addEventListener('click' , () =>  // submit button of create class modal
+{
+    
+    fetch("/createClass", {
+        method: "post",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify({
+          'name': document.getElementById('createClassNameInput').value,
+          'email': studentDetails['email'],
+          'code' : document.getElementById('createClassEnrollCodeInput').value
+        })
+      })
+    
     document.getElementById('createClassModal').style.display = "none";   
 })
 

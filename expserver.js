@@ -18,23 +18,19 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 
-app.post('/loginUser') , (req,res) => 
-{
+app.post('/loginUser', (req, res) => {
     if (!req.body) {
         return;
     }
-
-    if(User.find({email:req.body.email , password:req.body.password}).count())
-    {
-        res.json({found:true})
-    }
-    else
-    {
-        res.json({found:false})
-    }
-
-    res.send(200)
-}
+    User.find({ email: req.body.email, password: req.body.password }).count().then((ans) => {
+        if (ans) {
+            res.status(200).json({ found: true })
+        }
+        else {
+            res.status(200).json({ found: false })
+        }
+    })
+})
 
 app.post('/createStudent', async (req, res) => {
     if (!req.body) {
@@ -44,15 +40,13 @@ app.post('/createStudent', async (req, res) => {
         email: req.body.email,
         studentAccount: true,
         classes: [],
-        name:'',
-        bio:'',
+        name: '',
+        bio: '',
         joined: new Date(),
-        password:req.body.password
+        password: req.body.password
     })
-
-    if(User.find({email:req.body.email}).count())
-    {
-
+    const count = await User.find({ email: req.body.email }).count()
+    if (count) {
         try {
             const dataToSave = await data.save();
             res.status(200).json(dataToSave)
@@ -61,8 +55,7 @@ app.post('/createStudent', async (req, res) => {
             res.status(400).json({ message: error.message })
         }
     }
-    else
-    {
+    else {
         res.send(500)
     }
 });
@@ -77,13 +70,12 @@ app.post('/createInstructor', async (req, res) => {
         studentAccount: false,
         classes: [],
         name: '',
-        bio:'',
+        bio: '',
         joined: new Date(),
-        password:req.body.password
+        password: req.body.password
     })
-
-    if(User.find({email:req.body.email}).count())
-    {
+    const count = await User.find({ email: req.body.email }).count()
+    if (count) {
 
         try {
             const dataToSave = await data.save();
@@ -93,24 +85,29 @@ app.post('/createInstructor', async (req, res) => {
             res.status(400).json({ message: error.message })
         }
     }
-    else
-    {
+    else {
         res.send(500)
     }
 });
 
-app.post('/createClass', (req, res) => {
+app.post('/createClass', async (req, res) => {
     if (!req.body) {
         return;
     }
     // check1 : make sure the person creating class is an instructor
-    Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0, assignments:[] ,enrollCode: req.body.code}).then(res => {
-        console.log(req.body.email.length)
-        User.findOne({ email: req.body.email }).then((ans) => {
-            ans["classes"].push(req.body.name)
-            ans.save()
+
+  await Class.findOne({name:req.body.name}).then(res => 
+        {
+            console.log(res)
         })
-    });
+    
+    // Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0, assignments:[] ,enrollCode: req.body.code}).then(res => {
+    //     User.findOne({ email: req.body.email }).then((ans) => {
+    //         ans["classes"].push(req.body.name)
+    //         ans.save()
+    //         res.status(200)
+    //     })
+    // });
 });
 
 
@@ -121,8 +118,8 @@ app.post('/createAssignment', (req, res) => {   // creates assignemnt in class n
         return;
     }
     // can use className as id
-    Assignment.insertMany({ 'name': req.body.name, 'className': req.body.class,'release': new Date(), 'dueDate': new Date(req.body.dueDate) }).then(res => {
-        Class.findOne({name: req.body.class }).then((ans) => {
+    Assignment.insertMany({ 'name': req.body.name, 'className': req.body.class, 'release': new Date(), 'dueDate': new Date(req.body.dueDate) }).then(res => {
+        Class.findOne({ name: req.body.class }).then((ans) => {
             ans["classes"].push(req.body.req.body.name)
             ans.save()
         })
@@ -137,9 +134,9 @@ app.post('/createTestCase', (req, res) => {
     }
 
     Test.insertMany({
-        name: req.body.name, 
+        name: req.body.name,
         student: req.body.email,
-        class: req.body.class, 
+        class: req.body.class,
         assignment: req.body.assignment, // assignment test is associated with
         coverage: Math.floor(Math.random() * 101), // percent coverage
         code: req.body.code // block of code for a test
@@ -147,69 +144,74 @@ app.post('/createTestCase', (req, res) => {
     })
 
     res.send(200)
-   
+
 });
 
 app.post('/updateUser', (req, res) => {
-    
+
     if (!req.body) {
         res.send(400);
         return;
     }
 
-    User.updateOne({email:req.body.email} ,{ $set: {'name' : req.body.name , 'bio' :req.body.bio}}).catch(err => console.log(err))
+    User.updateOne({ email: req.body.email }, { $set: { 'name': req.body.name, 'bio': req.body.bio } }).catch(err => console.log(err))
 
     res.send(200)
 
 });
 
-app.post('/enrollClass' , (req,res) => {
+app.post('/enrollClass' ,async (req,res) => {
     // increment the size value of that class
     let code = req.body.code;
     let email = req.body.email;
+    let found = true;
+    let finish = false;
 
-    Class.updateOne({'enrollCode' : code} , {$inc: {'size' : 1}}).then((res) => {
-        User.updateOne({email:email} , {$push:{'classes' : res['name']}})
+   await Class.updateOne({'enrollCode' : code} , {$inc: {'size' : 1}}).then((ans) => {
+        if(ans.matchedCount === 0)
+        {
+            found = false; 
+        }
+        User.updateOne({email:email} , {$push:{'classes' : ans['name']}})
+        finish = true
     })
-       
-    
-    res.send(200)
 
+    found ? res.sendStatus(200) : res.sendStatus(500)
+       
 })
 
 
 app.get('/getStudent/:email/', (req, res) => {
-    
+
     let name = ''
     let email = ""
     let classes = [];
     let testCases = [];
     let bio = ''
     let joined = ''
-    
+
     User.findOne({
         $and: [
-          {
-            "email": req.params['email']
-          },
-          {
-            "studentAccount": true
-          }
+            {
+                "email": req.params['email']
+            },
+            {
+                "studentAccount": true
+            }
         ]
-    }).then((res2) => 
-    {
+    }).then((res2) => {
         classes = res2['classes']
         email = res2['email']
         name = res2['name']
         bio = res2['bio']
         joined = res2['joined']
 
-        Test.findOne({'email' : req.params['email']}).then((res) => {
-           testCases = res;
+        Test.findOne({ 'email': req.params['email'] }).then((res) => {
+            testCases = res;
         })
 
         res.json({
-            'name' : name,
+            'name': name,
             'bio': bio,
             'email': email,
             'classes': classes,
@@ -235,7 +237,7 @@ app.get('/getInstructor', (req, res) => {
 app.get('/getAssignments/:class', (req, res) => { //plural , used to populate table in student's dashboard
 
 
-    Assignment.find({ class : req.params['class'] }).then(res => {
+    Assignment.find({ class: req.params['class'] }).then(res => {
         res.json({ ans: res })
     })
 });
@@ -246,12 +248,12 @@ app.get('/getAssignment', (req, res) => { //singular , used for the assignment p
     }
     Assignment.find({
         $and: [
-          {
-            "name": req.body.name
-          },
-          {
-            "class": req.body.class
-          }
+            {
+                "name": req.body.name
+            },
+            {
+                "class": req.body.class
+            }
         ]
     }).then(res => {
         res.json({ 'result': res })

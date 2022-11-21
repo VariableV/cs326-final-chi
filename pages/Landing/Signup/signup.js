@@ -85,7 +85,7 @@ document.getElementById('signupButton').addEventListener('click' , () => {
                 },
                 body: JSON.stringify({
                   'email': email,
-                  'password' : crypto.createHash('sha256').update(password).digest('hex')
+                  'password' :password
                 })
               }).then((res) => 
               {
