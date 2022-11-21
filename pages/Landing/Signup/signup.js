@@ -75,8 +75,10 @@ document.getElementById('signupButton').addEventListener('click' , () => {
     document.getElementById('phoneError').innerHTML === ""
     )
     {
+        console.log("first pass")
         if(document.getElementById('Instructor').checked)
         {
+            console.log("second pass")
             fetch("/createInstructor", {
                 method: "post",
                 headers: {
@@ -85,7 +87,7 @@ document.getElementById('signupButton').addEventListener('click' , () => {
                 },
                 body: JSON.stringify({
                   'email': email,
-                  'password' : crypto.createHash('sha256').update(password).digest('hex')
+                  'password' : password//crypto.createHash('sha256').update(password).digest('hex')
                 })
               }).then((res) => 
               {
