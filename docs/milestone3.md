@@ -39,6 +39,8 @@ assignment document {
 ```
 
 ## Division of Labor
-Maheen - 
+Maheen - Design database schema and connected express endpoints to MongoDB
 
-Kanishk -
+Kanishk - Added more API endpoints and wrote front-end requests to backend
+
+Daniel - Nothing

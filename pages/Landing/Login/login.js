@@ -58,7 +58,7 @@ document.getElementById('loginButton').addEventListener('click' , () => {
     //    fetch('/getStudent').then(res => res.json())
     //    LOGIN THE USER HERE
 
-    fetch("/createStudent", {
+    fetch("/loginUser", {
         method: "post",
         headers: {
           'Accept': 'application/json',
@@ -66,9 +66,9 @@ document.getElementById('loginButton').addEventListener('click' , () => {
         },
         body: JSON.stringify({
           'email': email,
-          'password' : crypto.createHash('sha256').update(password).digest('hex')
+          'password' : password//crypto.createHash('sha256').update(password).digest('hex')
         })
-      }).then(res => res.json()).then(res => res.found ? location.href="/dashboard" : document.getElementById('passwordError').innerHTML === "Invalid Credentials")
+      }).then(res => res.json()).then(res => res["found"] ? location.href="/dashboard" : document.getElementById('passwordError').innerHTML = "Invalid Credentials")
     }
 
 
