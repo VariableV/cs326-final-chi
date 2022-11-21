@@ -2,7 +2,7 @@
 ```
 npm install
 node expserver.js
-``
+```
 
 ## Testing on server
 Visit https://final-team-chi.herokuapp.com/
