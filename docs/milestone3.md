@@ -44,3 +44,5 @@ Maheen - Design database schema and connected express endpoints to MongoDB. Work
 Kanishk - Added more API endpoints and wrote front-end requests to backend. Worked on Dashboard and Profile pages, and connected them to the backend.
 
 Daniel - Nothing
+
+Please check commit histories for more details
