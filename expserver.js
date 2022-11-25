@@ -315,7 +315,7 @@ app.use('/', !apiObj['student'] && !apiObj['instructor'] ? express.static('pages
 apiObj['student'] && app.use('/profile', express.static('pages/Profile'));
 app.use('/signup', express.static('pages/Landing/Signup'));
 app.use('/login', express.static('pages/Landing/Login'));
-app.use('/assignment', express.static('pages/Dashboard/Assignment'));
+app.use('/assignment/:class/:assignment', express.static('pages/Dashboard/Assignment'));
 app.use('/dashboard', express.static('pages/Dashboard/Dashboard'));
 app.use('/profile', express.static('pages/Profile'));
 
