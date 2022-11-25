@@ -163,16 +163,15 @@ app.post('/createTestCase', (req, res) => {
 
 });
 
-app.post('/updateUser', (req, res) => {
+app.post('/updateUser', async (req, res) => {
 
     if (!req.body) {
         res.send(400);
         return;
     }
 
-    User.updateOne({ email: req.body.email }, { $set: { 'name': req.body.name, 'bio': req.body.bio } })
-
-    res.send(200)
+   await User.updateOne({ email: req.body.email }, { $set: { 'name': req.body.name, 'bio': req.body.bio } })
+    res.sendStatus(200)
 
 });
 
