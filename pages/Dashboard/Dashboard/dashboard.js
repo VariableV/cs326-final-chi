@@ -2,6 +2,7 @@ let studentDetails = {};
 let assignmentDetails = [];
 let classDetails = [];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+const assignmentDiv = document.getElementById('assignments')
 
 studentDetails = await (await fetch(`/getUser/${window.localStorage.getItem('email')}`)).json()
 document.getElementById('dashboard').innerHTML = studentDetails['name'] !== '' ? `${studentDetails['name']}'s Dashboard` : `${studentDetails['email'].substring(0,studentDetails['email'].indexOf("@"))}'s Dashboard`;
@@ -44,7 +45,7 @@ getAssignments();
 
 
 
-const assignmentDiv = document.getElementById('assignments')
+
 
 function addClassesToDiv()
 {
@@ -56,7 +57,7 @@ function addClassesToDiv()
         div.classList.add('class')
         let className = document.createElement('h2');
         className.innerHTML = studentDetails.classes[i]['className']
-        let code = document.createElement('p')
+        let code = document.createElement('h5')
         code.innerHTML = `Enroll Code: ${studentDetails.classes[i]['code']}`// if studentaccount is true code will just say fall 2022
         div.appendChild(className)
         div.appendChild(code)
@@ -244,6 +245,7 @@ document.getElementById('classSubmit').addEventListener('click' , () =>  //enrol
                     })
                 document.getElementById('addCourseModal').style.display = "none";  
                 addClassesToDiv();
+                getAssignments();
                 document.getElementById('studentEnrollCode').value = ""
                 
             })
