@@ -1,7 +1,7 @@
 let studentDetails = {};
 let assignmentDetails = [];
-
-
+let classDetails = [];
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 studentDetails = await (await fetch(`/getUser/${window.localStorage.getItem('email')}`)).json()
 document.getElementById('dashboard').innerHTML = studentDetails['name'] !== '' ? `${studentDetails['name']}'s Dashboard` : `${studentDetails['email'].substring(0,studentDetails['email'].indexOf("@"))}'s Dashboard`;
@@ -10,28 +10,38 @@ document.getElementById('instructor').innerHTML = studentDetails['studentAccount
 document.getElementById('createAssignment').style.display = studentDetails['studentAccount'] ? 'none' : 'block'
 document.getElementById('addOrCreateCourse').innerHTML = studentDetails['studentAccount'] ? '+ Add A Course' : '+ Create A Course'
 const isStudent = studentDetails['studentAccount']
+console.log(studentDetails)
+
+
+async function getClassDetails()
+{
+    for(let i = 0; i< studentDetails['classes'].length;i++)
+    {
+        let classObj =  await (await fetch(`/getClass/${studentDetails['classes'][i]['className']}`)).json()
+        classDetails.push(classObj)
+    }
+}
 
 async function getAssignments()
 {
+    assignmentDetails = []
     for(let i = 0 ; i< studentDetails['classes'].length ; i++)
     {
-        // let assignment = await (await fetch(`/getAssignments/${studentDetails['classes'][i]}`)).json()
-        let assignemnt = []
-        assignmentDetails.push(...assignment.ans)
-    }
-    
+        let assignment = await (await fetch(`/getAssignments/${studentDetails['classes'][i]['className']}`)).json()
+        for(let j = 0; j<assignment.length;j++)
+        {
+            assignmentDetails.push(assignment[j])
+        }
+       
+    }    
+
+    addAssignmentsToDiv();
 }
-console.log(studentDetails)
-getAssignments()
-
-// const classes = document.getElementById('classes');
-// 
 
 
-// let assignments = assignmentDetails.map(elem => 
-//         {
-//           return elem['assignments'].map(assignment => { return {'className': elem['className'] , ...assignment}})
-//         })[0]
+getClassDetails();
+getAssignments();
+
 
 
 const assignmentDiv = document.getElementById('assignments')
@@ -62,8 +72,8 @@ function addClassesToSelect()
     for(let i = studentDetails.classes.length - 1; i>=0;i--)
     {
         const option = document.createElement('option');
-        option.innerHTML = studentDetails.classes[i]['className']
-
+        option.innerHTML = `${studentDetails.classes[i]['className']}`;
+        option.value = studentDetails.classes[i]['code']
         document.getElementById('classSelect').appendChild(option)
     }
 }
@@ -72,18 +82,18 @@ function addAssignmentsToDiv()
 {
 
     document.getElementById('assignments').innerHTML = ""
-    for(let i = 0 ; i<assignments.length;i++)
+    for(let i = 0 ; i<assignmentDetails.length;i++)
     {
             const div = document.createElement('div');
             div.classList.add('assignmentElem')
             let className = document.createElement('p')
-            className.innerHTML = assignments[i]['className']
+            className.innerHTML = assignmentDetails[i]['className']
             let assignmentName = document.createElement('p')
-            assignmentName.innerHTML = assignments[i]['name']
+            assignmentName.innerHTML = assignmentDetails[i]['name']
             let createdAt = document.createElement('p')
-            createdAt.innerHTML = assignments[i]['createdAt']
+            createdAt.innerHTML = `${months[new Date(assignmentDetails[i]['release']).getMonth()]} ${new Date(assignmentDetails[i]['release']).getDate()}, ${new Date(assignmentDetails[i]['release']).getFullYear()}`
             let dueAt = document.createElement('p')
-            dueAt.innerHTML = assignments[i]['dueAt']
+            dueAt.innerHTML = `${months[new Date(assignmentDetails[i]['due']).getMonth()]} ${new Date(assignmentDetails[i]['due']).getDate()}, ${new Date(assignmentDetails[i]['due']).getFullYear()}`
             div.appendChild(className)
             div.appendChild(assignmentName)
             div.appendChild(createdAt)
@@ -106,7 +116,7 @@ function addAssignmentsToDiv()
 
 
 addClassesToDiv()
-addAssignmentsToDiv()
+// addAssignmentsToDiv()
 addClassesToSelect();
 
 document.getElementById('addEnroll').addEventListener('click' , () => 
@@ -132,11 +142,11 @@ document.getElementById('classNameArrow').addEventListener('click' , () => {
 
     if(document.getElementById('classNameArrow').className === "bi bi-caret-down-fill") // sort descending
     {
-        assignments = assignments.sort((a,b) => b['className'] - a['className'])
+        assignmentDetails = assignmentDetails.sort((a,b) =>  b.className.localeCompare(a.className))
     }
     else    // sort Ascending
     {   
-        assignments = assignments.sort((a,b) => a['className'] - b['className'])
+        assignmentDetails = assignmentDetails.sort((a,b) =>  a.className.localeCompare(b.className))
     }
     document.getElementById('classNameArrow').classList.toggle('bi-caret-up-fill');
     // document.getElementById('dueDateArrow').className = "bi bi-caret-down-fill"
@@ -148,19 +158,19 @@ document.getElementById('dueDateArrow').addEventListener('click' , () => {
 
     if(document.getElementById('dueDateArrow').className === "bi bi-caret-down-fill") // sort descending
     {
-        assignments = assignments.slice(0).sort((a,b) =>{
+        assignmentDetails = assignmentDetails.slice(0).sort((a,b) =>{
             
-            var aDate = new Date(a['dueAt']);
-            var bDate = new Date(b['dueAt']);
+            var aDate = new Date(a['due']);
+            var bDate = new Date(b['due']);
             return bDate.getTime() - aDate.getTime();
         })
     }
     else    // sort Ascending
     {   
-        assignments = assignments.slice(0).sort((a,b) => {
+        assignmentDetails = assignmentDetails.slice(0).sort((a,b) => {
            
-            var aDate = new Date(a['dueAt']);
-            var bDate = new Date(b['dueAt']);
+            var aDate = new Date(a['due']);
+            var bDate = new Date(b['due']);
             return aDate.getTime() - bDate.getTime();
         })
     }
@@ -170,10 +180,36 @@ document.getElementById('dueDateArrow').addEventListener('click' , () => {
    
 })
 
-document.getElementById('assignmentCancel').addEventListener('click' , () => 
+document.getElementById('assignmentSubmit').addEventListener('click' , () =>    //assignment create cancel 
+{
+    fetch("/createAssignment", {
+        method: "post",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify({
+          'className': document.getElementById('classSelect').options[document.getElementById('classSelect').selectedIndex].text,
+          'name' : document.getElementById('assignmentNameInputField').value,
+          'classEnrollCode': document.getElementById('classSelect').value,
+          'dueDate': new Date(document.getElementById('assignmentDueInputField').value),
+          'released': new Date(),
+          
+        })
+      }).then((res) => 
+      {
+        getAssignments()
+        document.getElementById('createAssignmentModal').style.display = "none";   
+      })
+
+    
+})
+
+document.getElementById('assignmentCancel').addEventListener('click' , () =>    //assignment create cancel 
 {
     document.getElementById('createAssignmentModal').style.display = "none";   
 })
+
 
 
 document.getElementById('classCancel').addEventListener('click' , () =>  // enroll code cancel button
@@ -266,6 +302,7 @@ document.getElementById('createSubmit').addEventListener('click' , () =>  // sub
                     'code' : code
                     })
                 addClassesToDiv();
+                addClassesToSelect();
                 document.getElementById('createClassModal').style.display = "none";  
             })
 

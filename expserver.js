@@ -111,20 +111,36 @@ app.post('/createClass', async (req, res) => {
 });
 
 
-app.post('/createAssignment', (req, res) => {   // creates assignemnt in class need a class 
+app.post('/createAssignment', async (req, res) => {   // creates assignemnt in class need a class 
 
     if (!req.body) {
         res.send(400);
         return;
     }
-    // can use className as id
-    Assignment.insertMany({ 'name': req.body.name, 'className': req.body.class, 'release': new Date(), 'dueDate': new Date(req.body.dueDate) }).then(res => {
-        Class.findOne({ name: req.body.class }).then((ans) => {
-            ans["classes"].push(req.body.req.body.name)
-            ans.save()
-        })
-    });
+
+    let assignemntName = req.body.name
+    let className = req.body.className
+    let classEnrollCode = req.body.classEnrollCode
+    let dueDate = req.body.dueDate
+    let releasedDate = req.body.released
+ 
+    await Assignment.insertMany({ 'name': assignemntName, 'className': className, 'release': releasedDate,'due': dueDate})
+
+    await Class.updateOne({
+        $and: [
+            {
+                "name": className
+            },
+            {
+                "enrollCode": classEnrollCode
+            }
+        ]
+    } , {$push : { 'assignments' : assignemntName} })
+
+    res.sendStatus(200)
+
 });
+
 
 app.post('/createTestCase', (req, res) => {
 
@@ -260,13 +276,16 @@ app.get('/getClassByCode/:enrollCode', (req, res) => {
 
 app.get('/getAssignments/:class', (req, res) => { //plural , used to populate table in student's dashboard
 
-
-    Assignment.find({ class: req.params['class'] }).then(res => {
-        res.json({ ans: res })
+    
+    Assignment.find({ className: req.params['class'] }).then(response => {
+        console.log(response)
+        res.json(response)
     })
 });
 
-app.get('/getAssignment', (req, res) => { //singular , used for the assignment page , need class and assignmentName
+
+
+app.get('/getAssignment', (req, res) => { //singular , used for the assignment page , need assignmentId
     if (!req.body) {
         return;
     }
