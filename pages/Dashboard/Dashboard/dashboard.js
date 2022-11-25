@@ -8,18 +8,20 @@ document.getElementById('dashboard').innerHTML = studentDetails['name'] !== '' ?
 document.getElementById('email').innerHTML = studentDetails['email']
 document.getElementById('instructor').innerHTML = studentDetails['studentAccount'] ? 'Student' : 'Instructor'
 document.getElementById('createAssignment').style.display = studentDetails['studentAccount'] ? 'none' : 'block'
+document.getElementById('addOrCreateCourse').innerHTML = studentDetails['studentAccount'] ? '+ Add A Course' : '+ Create A Course'
 const isStudent = studentDetails['studentAccount']
 
 async function getAssignments()
 {
     for(let i = 0 ; i< studentDetails['classes'].length ; i++)
     {
-        let assignment = await (await fetch(`/getAssignments/${studentDetails['classes'][i]}`)).json()
+        // let assignment = await (await fetch(`/getAssignments/${studentDetails['classes'][i]}`)).json()
+        let assignemnt = []
         assignmentDetails.push(...assignment.ans)
     }
     
 }
-
+console.log(studentDetails)
 getAssignments()
 
 // const classes = document.getElementById('classes');
@@ -37,36 +39,30 @@ const assignmentDiv = document.getElementById('assignments')
 function addClassesToDiv()
 {
     document.getElementById('classes').innerHTML = ""
-    for(let i = 0; i<studentDetails.classes.length;i++)
+
+    for(let i = studentDetails.classes.length - 1; i>=0;i--)
     {
         const div = document.createElement('div');
         div.classList.add('class')
         let className = document.createElement('h2');
-        className.innerHTML = studentDetails.classes[i]
-        let sem = document.createElement('p')
-        sem.innerHTML = "Fall 2022"
+        className.innerHTML = studentDetails.classes[i]['className']
+        let code = document.createElement('p')
+        code.innerHTML = `Enroll Code: ${studentDetails.classes[i]['code']}`// if studentaccount is true code will just say fall 2022
         div.appendChild(className)
-        div.appendChild(sem)
+        div.appendChild(code)
         classes.appendChild(div)
     }
 
-    const div = document.createElement('div')
-    div.classList.add('addEnroll')
-    div.id = 'addEnroll'
-    let course = document.createElement('h2');
-    course.innerHTML = "+ Add A Course"
-    div.appendChild(course)
-    classes.appendChild(div)
 
 }
 
 function addClassesToSelect()
 {
     document.getElementById('classSelect').innerHTML = ""
-    for(let i = 0; i<studentDetails.classes.length;i++)
+    for(let i = studentDetails.classes.length - 1; i>=0;i--)
     {
         const option = document.createElement('option');
-        option.innerHTML = studentDetails.classes[i]
+        option.innerHTML = studentDetails.classes[i]['className']
 
         document.getElementById('classSelect').appendChild(option)
     }
@@ -188,6 +184,8 @@ document.getElementById('classCancel').addEventListener('click' , () =>  // enro
 
 document.getElementById('classSubmit').addEventListener('click' , () =>  //enroll code submit button
 {
+    if(document.getElementById('studentEnrollCode').value !== "")
+    {
 
     fetch("/enrollClass", {
         method: "post",
@@ -199,10 +197,39 @@ document.getElementById('classSubmit').addEventListener('click' , () =>  //enrol
           'email': studentDetails['email'],
           'code' : document.getElementById('studentEnrollCode').value
         })
-      }).then(res =>  {
-        res.ok ? document.getElementById('addCourseModal').style.display = "none" : document.getElementById('studentEnrollCode').style.borderColor='red'})
+      }).then((res) =>  {
+        if(res.ok)
+        {
+            fetch(`/getClassByCode/${document.getElementById('studentEnrollCode').value}`).then((response) => response.json())
+            .then((response) => {
+                studentDetails['classes'].push(
+                    {'className' : response['name'] , 
+                    'code' : document.getElementById('studentEnrollCode').value
+                    })
+                document.getElementById('addCourseModal').style.display = "none";  
+                addClassesToDiv();
+                document.getElementById('studentEnrollCode').value = ""
+                
+            })
+
+        }
+        else
+        {   
+            document.getElementById('studentEnrollCode').style.borderColor='red'
+        }
+
+    })}
 
    
+})
+
+
+document.getElementById('createClassNameInput').addEventListener('keypress' , (event) => 
+{
+    let key = event.keyCode;
+    if (key === 32) {
+      event.preventDefault();
+    }
 })
 
 document.getElementById('createCancel').addEventListener('click' , () =>  // cancel button of create class modal
@@ -212,7 +239,11 @@ document.getElementById('createCancel').addEventListener('click' , () =>  // can
 
 document.getElementById('createSubmit').addEventListener('click' , () =>  // submit button of create class modal
 {
-    
+    if(document.getElementById('createClassNameInput').value !== "")
+    {
+     
+    let code = 0;   
+
     fetch("/createClass", {
         method: "post",
         headers: {
@@ -222,15 +253,31 @@ document.getElementById('createSubmit').addEventListener('click' , () =>  // sub
         body: JSON.stringify({
           'name': document.getElementById('createClassNameInput').value,
           'email': studentDetails['email'],
-          'code' : document.getElementById('createClassEnrollCodeInput').value
         })
-      })
-    
-    document.getElementById('createClassModal').style.display = "none";   
-})
+      }).then((res) => 
+      {
+        if(res.ok)
+        {
+           let obj = fetch(`/getClass/${document.getElementById('createClassNameInput').value}`).
+            then(response => response.json()).then(response => {
+                code = response['enrollCode']
+                studentDetails['classes'].push(
+                    {'className' : document.getElementById('createClassNameInput').value , 
+                    'code' : code
+                    })
+                addClassesToDiv();
+                document.getElementById('createClassModal').style.display = "none";  
+            })
 
-document.getElementById('classEnroll').addEventListener('click' , () => 
-{
-    document.getElementById('addCourseModal').style.display = "none"
+            
+      
+        }
+        else
+        {
+            document.getElementById('createClassError').innerHTML = "Class already exists for this semester"
+        }
+
+      })}
     
+
 })

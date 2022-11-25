@@ -18,8 +18,8 @@ function classDeets()
         let count = 0;
         for(let i = 0 ; i< studentDetails['classes'].length;i++)
         {
-            const classData = await (await fetch('/getClass')).json()
-            classDetails[studentDetails['classes'][i]] = classData
+            const classData = await (await fetch(`/getClass/${studentDetails['classes'][i]['className']}`)).json()
+            classDetails[studentDetails['classes'][i]['className']] = classData
             sumOfStudents += classData['size']
             count+=1;
 

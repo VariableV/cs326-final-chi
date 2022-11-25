@@ -29,7 +29,7 @@ const userDoc = new Schema({
     name: { required: false, type: String }, // name of user, optional field
     bio: { required: false, type: String }, // bio of user, optional field
     studentAccount: { required: true, type: Boolean }, // True for student, False for Teacher
-    classes: { required: true, type: [String] }, // classes teaching or enrolled in
+    classes: { required: true, type: [Object] }, // classes teaching or enrolled in
     joined: { required: true, type: Date },// join date
     password:{required: true, type:String} // hashed password
 });

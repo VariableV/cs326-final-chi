@@ -108,7 +108,7 @@ li
     border: 1px solid #888;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     width: 30%; 
-    height: 50%;
+    height: 40%;
     align-items: center;
     
   }
@@ -157,6 +157,7 @@ li
     margin-top: 20px;
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .class
@@ -165,6 +166,7 @@ li
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding: 20px 15px;
     margin-right: 30px;
+    margin-top: 20px;
     text-align: start;
     width: 250px;
     flex-wrap: wrap;
@@ -193,7 +195,7 @@ li
     margin-right: 30px;
     text-align: center;
     width: 250px;
-    flex-wrap: wrap;
+    margin-top: 20px;
     cursor: pointer;
 }
 

@@ -47,15 +47,14 @@
                     </div>
                     <div style="margin-bottom: 10px; align-items: center; display: flex;">
                         <p style="width: 140px">Class Name</p>
-                        <input id = "createClassNameInput" type="text">
-                        
+                        <input id = "createClassNameInput" oninput="this.value = this.value.toUpperCase()" type="text">  
                     </div>
-                    <div style="margin-bottom: 10px ; align-items: center; display: flex;">
+                    <!-- <div style="margin-bottom: 10px ; align-items: center; display: flex;">
                         <p style="width: 140px;">Enroll Code</p>
                         <input id ="createClassEnrollCodeInput"type="text">
-                    </div>
-                    <p style="color: gray;font-size:12px; position: relative; bottom: 5;">The enroll code you provide will be used by the students to enroll in your class</p>
-                    
+                    </div> -->
+                    <p style="color: gray;font-size:12px; position: relative; bottom: 5;">Make sure the class is unique, if there are multiple sessions, add Session number at the end</p>
+                    <p style = "color: red;" id = "createClassError"></p>
                     <div style="display: flex; justify-content: center; margin-top: 10px;">
                         <button id="createSubmit" style ="cursor: pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(8, 92, 8);">Submit</button>
                         <button id ="createCancel" style="cursor:pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(126, 15, 15);">Cancel</button>
@@ -101,8 +100,13 @@
                 <h4 id = "email" style="color:gray;margin-top: 5px; font-weight: 600;"></h3>
                 <h5 style="color:gray;margin-top: 5px;font-weight:600 ;">Fall 2022</h5>
             </div>
-            <div id="classes"></div>
-            
+            <div>
+                <div id="addEnroll" class="addEnroll">
+                    <h2 id ="addOrCreateCourse"></h2>
+                </div>
+                <div id="classes"></div>
+                
+            </div>
             <div style="display: flex; justify-content:space-between">
             <h4 style="margin-top: 30px; font-weight: 550; padding: 8px 0px;">Assignments</h4>
             <button id="createAssignment" style="margin-top: 30px;cursor: pointer; padding: 8px 20px; background-color: #13284D; color: white; border-radius: 10px;">+ Create Assignment</button>

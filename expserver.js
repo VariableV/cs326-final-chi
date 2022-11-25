@@ -11,11 +11,6 @@ connect(url);
 const app = express();
 const port = process.env.PORT || 3000;
 
-// no get class , only get assignment 
-//if a user clicks on  the class nothing happnes , only if the user clicks on the assignment we will redirect
-// no class page (classes always COMPSCI not CS)
-
-// 3DBs , Classes
 app.use(express.json());
 
 
@@ -82,20 +77,37 @@ app.post('/createClass', async (req, res) => {
     if (!req.body) {
         return;
     }
-    // check1 : make sure the person creating class is an instructor
+    let classExists = false;
 
-  await Class.findOne({name:req.body.name}).then(res => 
+    await Class.findOne({name:req.body.name}).then(val => 
         {
-            console.log(res)
+            if(val !== null)
+            {
+                classExists = true;
+            }
         })
-    
-    Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0, assignments:[] ,enrollCode: req.body.code}).then(res => {
-        User.findOne({ email: req.body.email }).then((ans) => {
-            ans["classes"].push(req.body.name)
-            ans.save()
-            res.status(200)
-        })
-    });
+        
+        if(classExists)
+        {
+            res.sendStatus(500)
+            return;
+        }
+
+    const codesArray =  await Class.distinct('enrollCode')
+
+    while(true)
+    {
+        let rand = Math.floor(Math.random() * 10000)
+        if(!codesArray.includes(rand))
+        {
+            await Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0, assignments:[] ,enrollCode: rand})
+            await  User.updateOne({ email: req.body.email },{ $push: { 'classes': {'className': req.body.name , 'code': rand }}})   
+            break;
+        }    
+    }
+
+   res.sendStatus(200)
+
 });
 
 
@@ -142,7 +154,7 @@ app.post('/updateUser', (req, res) => {
         return;
     }
 
-    User.updateOne({ email: req.body.email }, { $set: { 'name': req.body.name, 'bio': req.body.bio } }).catch(err => console.log(err))
+    User.updateOne({ email: req.body.email }, { $set: { 'name': req.body.name, 'bio': req.body.bio } })
 
     res.send(200)
 
@@ -153,65 +165,27 @@ app.post('/enrollClass' ,async (req,res) => {
     let code = req.body.code;
     let email = req.body.email;
     let found = true;
-    let finish = false;
+    let className = "";
 
    await Class.updateOne({'enrollCode' : code} , {$inc: {'size' : 1}}).then((ans) => {
         if(ans.matchedCount === 0)
         {
             found = false; 
         }
-        User.updateOne({email:email} , {$push:{'classes' : ans['name']}})
-        finish = true
     })
+    if(!found)
+    {   
+        res.sendStatus(500)
+        return
+    }
 
-    found ? res.sendStatus(200) : res.sendStatus(500)
+    let classObj = await Class.findOne({'enrollCode' : code})
+
+    await User.updateOne({email:email} , {$push:{'classes' : {'className': classObj['name'] , 'code': req.body.code }}})
+
+    res.sendStatus(200);
        
 })
-
-
-app.get('/getStudent/:email/', (req, res) => {
-
-    let name = ''
-    let email = ""
-    let classes = [];
-    let testCases = [];
-    let bio = ''
-    let joined = ''
-
-
-    User.findOne({
-        $and: [
-            {
-                "email": req.params['email']
-            },
-            {
-                "studentAccount": true
-            }
-        ]
-    }).then((res2) => {
-        classes = res2['classes']
-        email = res2['email']
-        name = res2['name']
-        bio = res2['bio']
-        joined = res2['joined']
-
-        Test.findOne({ 'email': req.params['email'] }).then((res) => {
-            testCases = res;
-        })
-
-        res.json({
-            'name': name,
-            'bio': bio,
-            'email': email,
-            'classes': classes,
-            'testCases': testCases,
-            'joined' : joined,
-            'studentAccount': res2['studentAccount']
-        });
-    })  //send name
-
-});
-
 
 app.get('/getUser/:email', (req , res) => 
 {
@@ -225,7 +199,6 @@ app.get('/getUser/:email', (req , res) =>
     User.findOne({"email": req.params['email']
         
     }).then((res2) => {
-        console.log(res2)
         classes = res2['classes']
         email = res2['email']
         name = res2['name']
@@ -264,17 +237,26 @@ app.get('/getUser/:email', (req , res) =>
     })
 })
 
-app.get('/getInstructor', (req, res) => {
-    if (!req.body) {
-        return;
-    }
+app.get('/getClass/:class', (req, res) => {
 
-    User.findOne({ email: req.body.email, studentAccount: false }).then(res => {
-        res.json({ id: res["_id"], email: res["email"], classes: res["classes"], 'name': name,
-        'bio': bio, 'joined' : joined,
-        'studentAccount': res['studentAccount'] });
-    });
+    Class.findOne({'name' : req.params['class']}).then((response) => 
+    {
+        res.json(response)
+    })
+    
 });
+
+app.get('/getClassByCode/:enrollCode', (req, res) => {
+
+    Class.findOne({'enrollCode' : req.params['enrollCode']}).then((response) => 
+    {
+        res.json(response)
+    })
+    
+});
+
+
+
 
 app.get('/getAssignments/:class', (req, res) => { //plural , used to populate table in student's dashboard
 
