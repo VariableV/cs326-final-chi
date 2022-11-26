@@ -95,6 +95,7 @@ function addAssignmentsToDiv()
             createdAt.innerHTML = `${months[new Date(assignmentDetails[i]['release']).getMonth()]} ${new Date(assignmentDetails[i]['release']).getDate()}, ${new Date(assignmentDetails[i]['release']).getFullYear()}`
             let dueAt = document.createElement('p')
             dueAt.innerHTML = `${months[new Date(assignmentDetails[i]['due']).getMonth()]} ${new Date(assignmentDetails[i]['due']).getDate()}, ${new Date(assignmentDetails[i]['due']).getFullYear()}`
+            dueAt.style.color = new Date() < new Date(assignmentDetails[i]['due']) ? 'green' : '#8a1a1a'
             div.appendChild(className)
             div.appendChild(assignmentName)
             div.appendChild(createdAt)
