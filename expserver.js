@@ -118,13 +118,16 @@ app.post('/createAssignment', async (req, res) => {   // creates assignemnt in c
         return;
     }
 
-    let assignemntName = req.body.name
+    let assignmentName = req.body.name
     let className = req.body.className
     let classEnrollCode = req.body.classEnrollCode
     let dueDate = req.body.dueDate
     let releasedDate = req.body.released
+    let testFunction = req.body.testFunction
+    let correctFunction = req.body.correctFunction
  
-    await Assignment.insertMany({ 'name': assignemntName, 'className': className, 'release': releasedDate,'due': dueDate})
+    await Assignment.insertMany({ 'name': assignmentName, 'className': className, 'release': releasedDate,'due': dueDate , 
+    'submissions' :  Math.floor(Math.random() * 101) , 'test' : testFunction , 'correct' : correctFunction })
 
     await Class.updateOne({
         $and: [
@@ -135,7 +138,7 @@ app.post('/createAssignment', async (req, res) => {   // creates assignemnt in c
                 "enrollCode": classEnrollCode
             }
         ]
-    } , {$push : { 'assignments' : assignemntName} })
+    } , {$push : { 'assignments' : assignmentName} })
 
     res.sendStatus(200)
 

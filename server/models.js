@@ -4,7 +4,11 @@ const assignmentDoc = new Schema({
     name: String, // name for assignment
     className: String, // class that assignment is in
     release: Date, // release date for assignment
-    due: Date // due date for assignment
+    due: Date, // due date for assignment
+    submissions:Number, //number of submissions
+    test:String, // function that student will test on 
+    correct:String, // correct function for us to autograde
+
 });
 
 const classDoc = new Schema({

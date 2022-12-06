@@ -196,7 +196,8 @@ document.getElementById('assignmentSubmit').addEventListener('click' , () =>    
           'classEnrollCode': document.getElementById('classSelect').value,
           'dueDate': new Date(document.getElementById('assignmentDueInputField').value),
           'released': new Date(),
-          
+          'testFunction' : document.getElementById('assignmentTestFunction').value,
+          'correctFunction' : document.getElementById('assignmentCorrectFunction').value      
         })
       }).then((res) => 
       {

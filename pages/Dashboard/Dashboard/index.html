@@ -64,28 +64,37 @@
             </div>
 
             <div id ="createAssignmentModal">
-                <div class="assignment-modal-content">
+                <div class="assignment-modal-content" style="overflow-y: scroll;">
                     <h2 style="font-weight: 550; text-align: center;">Create Assignment</h2>
                     <div style ="width: 100%; margin-bottom: 20px;">
                         <p style="color: gray;font-size:12px; text-align: center;">Create an assignment for your class and share the 6 digit code</p>
                     </div>
                     <div style="margin-bottom: 10px; align-items: center; display: flex; justify-content: flex-start;">
-                        <p style="width: 140px">Class Name</p>
+                        <p style="width: 150px">Class Name</p>
                         <select class="form-select" id ="classSelect"  style="width: 120px; height:30px; border-radius: 5px; border-radius: 10px; 
                         border-width: 2px; 
                         border-color: black;">
                         </select>
                     </div>
                     <div  style="margin-bottom: 10px ; align-items: center; display: flex;">
-                        <p style="width: 140px";>Assignment Name</p>
+                        <p style="width: 150px";>Assignment Name</p>
                         <input type="text" id = "assignmentNameInputField">
                     </div>
                     <div style="margin-bottom: 10px ; align-items: center; display:flex;">
-                        <p style="width: 140px;">Due Date</p>
+                        <p style="width: 150px;">Due Date</p>
                         <input type="date" id = "assignmentDueInputField">
                     </div>
                     <!-- <p style="color: gray;font-size:12px; margin-left: 140px; position: relative; bottom: 5;">Please submit in MM/DD/YYYY format</p> -->
-                    
+                    <div style="margin-bottom: 10px ; display:flex;">
+                        <p style="width: 150px;">Test Function</p>
+                        <textarea rows="4" cols="20" id = "assignmentTestFunction"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 10px ; display:flex;">
+                        <p style="width: 150px;">Correct Function</p>
+                        <textarea rows="4" cols="20" id = "assignmentCorrectFunction"></textarea>
+                    </div>
+
                     <div style="display: flex; justify-content: center; margin-top: 10px;">
                         <button id="assignmentSubmit" style ="cursor: pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(8, 92, 8);">Submit</button>
                         <button id ="assignmentCancel" style="cursor:pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(126, 15, 15);">Cancel</button>
