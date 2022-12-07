@@ -32,6 +32,22 @@ app.post('/createStudent', async (req, res) => {
     if (!req.body) {
         return;
     }
+
+    await User.findOne({email:req.body.email}).then(val => 
+        {
+            if(val !== null)
+            {
+                userExists = true;
+            }
+        })
+        
+        if(userExists)
+        {
+            res.sendStatus(500)
+            return;
+        }
+
+        
     const data = new User({
         email: req.body.email,
         studentAccount: true,
@@ -41,6 +57,8 @@ app.post('/createStudent', async (req, res) => {
         joined: new Date(),
         password: req.body.password
     })
+
+
     try {
         const dataToSave = await data.save();
         res.status(200).json(dataToSave)
@@ -54,15 +72,32 @@ app.post('/createInstructor', async (req, res) => {
     if (!req.body) {
         return;
     }
-    const data = new User({
-        email: req.body.email,
-        studentAccount: false,
-        classes: [],
-        name: '',
-        bio: '',
-        joined: new Date(),
-        password: req.body.password
-    })
+    let userExists = false;
+    
+    await User.findOne({email:req.body.email}).then(val => 
+        {
+            if(val !== null)
+            {
+                userExists = true;
+            }
+        })
+        
+        if(userExists)
+        {
+            res.sendStatus(500)
+            return;
+        }
+
+        const data = new User({
+            email: req.body.email,
+            studentAccount: false,
+            classes: [],
+            name: '',
+            bio: '',
+            joined: new Date(),
+            password: req.body.password
+        })
+
     try {
         const dataToSave = await data.save();
         res.status(200).json(dataToSave)
