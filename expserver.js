@@ -47,7 +47,7 @@ app.post('/createStudent', async (req, res) => {
             return;
         }
 
-        
+
     const data = new User({
         email: req.body.email,
         studentAccount: true,
@@ -180,7 +180,7 @@ app.post('/createAssignment', async (req, res) => {   // creates assignemnt in c
 });
 
 
-app.post('/createTestCase', (req, res) => {
+app.post('/createTestCase', (req, res) => { //increment assignment submission by 1 for each user once he uploads a testcase
 
     if (!req.body) {
         res.send(400);

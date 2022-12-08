@@ -68,8 +68,17 @@ document.getElementById('loginButton').addEventListener('click' , () => {
           'email': email,
           'password' : password//crypto.createHash('sha256').update(password).digest('hex')
         })
-      }).then(res => res.json()).then(res => res["found"] ? location.href="/dashboard" : document.getElementById('passwordError').innerHTML = "Invalid Credentials")
+      }).then(res => res.json()).then(res => {
+        if(res['found'])
+        {
+            window.localStorage.setItem('email' , email)
+            location.href="/dashboard";
+        }
+        else
+        {
+            document.getElementById('passwordError').innerHTML = "Invalid Credentials"
+        }
+      })
+
     }
-
-
 })
