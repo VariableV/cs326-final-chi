@@ -33,19 +33,18 @@ app.post('/createStudent', async (req, res) => {
         return;
     }
 
-    await User.findOne({email:req.body.email}).then(val => 
-        {
-            if(val !== null)
-            {
-                userExists = true;
-            }
-        })
-        
-        if(userExists)
-        {
-            res.sendStatus(500)
-            return;
+    let userExists = false;
+
+    await User.findOne({ email: req.body.email }).then(val => {
+        if (val !== null) {
+            userExists = true;
         }
+    })
+
+    if (userExists) {
+        res.sendStatus(500)
+        return;
+    }
 
 
     const data = new User({
@@ -73,30 +72,27 @@ app.post('/createInstructor', async (req, res) => {
         return;
     }
     let userExists = false;
-    
-    await User.findOne({email:req.body.email}).then(val => 
-        {
-            if(val !== null)
-            {
-                userExists = true;
-            }
-        })
-        
-        if(userExists)
-        {
-            res.sendStatus(500)
-            return;
-        }
 
-        const data = new User({
-            email: req.body.email,
-            studentAccount: false,
-            classes: [],
-            name: '',
-            bio: '',
-            joined: new Date(),
-            password: req.body.password
-        })
+    await User.findOne({ email: req.body.email }).then(val => {
+        if (val !== null) {
+            userExists = true;
+        }
+    })
+
+    if (userExists) {
+        res.sendStatus(500)
+        return;
+    }
+
+    const data = new User({
+        email: req.body.email,
+        studentAccount: false,
+        classes: [],
+        name: '',
+        bio: '',
+        joined: new Date(),
+        password: req.body.password
+    })
 
     try {
         const dataToSave = await data.save();
@@ -114,34 +110,29 @@ app.post('/createClass', async (req, res) => {
     }
     let classExists = false;
 
-    await Class.findOne({name:req.body.name}).then(val => 
-        {
-            if(val !== null)
-            {
-                classExists = true;
-            }
-        })
-        
-        if(classExists)
-        {
-            res.sendStatus(500)
-            return;
+    await Class.findOne({ name: req.body.name }).then(val => {
+        if (val !== null) {
+            classExists = true;
         }
+    })
 
-    const codesArray =  await Class.distinct('enrollCode')
-
-    while(true)
-    {
-        let rand = Math.floor(Math.random() * 10000)
-        if(!codesArray.includes(rand))
-        {
-            await Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0, assignments:[] ,enrollCode: rand})
-            await  User.updateOne({ email: req.body.email },{ $push: { 'classes': {'className': req.body.name , 'code': rand }}})   
-            break;
-        }    
+    if (classExists) {
+        res.sendStatus(500)
+        return;
     }
 
-   res.sendStatus(200)
+    const codesArray = await Class.distinct('enrollCode')
+
+    while (true) {
+        let rand = Math.floor(Math.random() * 10000)
+        if (!codesArray.includes(rand)) {
+            await Class.insertMany({ name: req.body.name, instructor: req.body.email, size: 0, assignments: [], enrollCode: rand })
+            await User.updateOne({ email: req.body.email }, { $push: { 'classes': { 'className': req.body.name, 'code': rand } } })
+            break;
+        }
+    }
+
+    res.sendStatus(200)
 
 });
 
@@ -160,9 +151,11 @@ app.post('/createAssignment', async (req, res) => {   // creates assignemnt in c
     let releasedDate = req.body.released
     let testFunction = req.body.testFunction
     let correctFunction = req.body.correctFunction
- 
-    await Assignment.insertMany({ 'name': assignmentName, 'className': className, 'release': releasedDate,'due': dueDate , 
-    'submissions' :  Math.floor(Math.random() * 101) , 'test' : testFunction , 'correct' : correctFunction })
+
+    await Assignment.insertMany({
+        'name': assignmentName, 'className': className, 'release': releasedDate, 'due': dueDate,
+        'submissions': Math.floor(Math.random() * 101), 'test': testFunction, 'correct': correctFunction
+    })
 
     await Class.updateOne({
         $and: [
@@ -173,7 +166,7 @@ app.post('/createAssignment', async (req, res) => {   // creates assignemnt in c
                 "enrollCode": classEnrollCode
             }
         ]
-    } , {$push : { 'assignments' : assignmentName} })
+    }, { $push: { 'assignments': assignmentName } })
 
     res.sendStatus(200)
 
@@ -208,40 +201,37 @@ app.post('/updateUser', async (req, res) => {
         return;
     }
 
-   await User.updateOne({ email: req.body.email }, { $set: { 'name': req.body.name, 'bio': req.body.bio } })
+    await User.updateOne({ email: req.body.email }, { $set: { 'name': req.body.name, 'bio': req.body.bio } })
     res.sendStatus(200)
 
 });
 
-app.post('/enrollClass' ,async (req,res) => {
+app.post('/enrollClass', async (req, res) => {
     // increment the size value of that class
     let code = req.body.code;
     let email = req.body.email;
     let found = true;
     let className = "";
 
-   await Class.updateOne({'enrollCode' : code} , {$inc: {'size' : 1}}).then((ans) => {
-        if(ans.matchedCount === 0)
-        {
-            found = false; 
+    await Class.updateOne({ 'enrollCode': code }, { $inc: { 'size': 1 } }).then((ans) => {
+        if (ans.matchedCount === 0) {
+            found = false;
         }
     })
-    if(!found)
-    {   
+    if (!found) {
         res.sendStatus(500)
         return
     }
 
-    let classObj = await Class.findOne({'enrollCode' : code})
+    let classObj = await Class.findOne({ 'enrollCode': code })
 
-    await User.updateOne({email:email} , {$push:{'classes' : {'className': classObj['name'] , 'code': req.body.code }}})
+    await User.updateOne({ email: email }, { $push: { 'classes': { 'className': classObj['name'], 'code': req.body.code } } })
 
     res.sendStatus(200);
-       
+
 })
 
-app.get('/getUser/:email', (req , res) => 
-{
+app.get('/getUser/:email', (req, res) => {
     let name = ''
     let email = ""
     let classes = [];
@@ -249,8 +239,9 @@ app.get('/getUser/:email', (req , res) =>
     let bio = ''
     let joined = ''
 
-    User.findOne({"email": req.params['email']
-        
+    User.findOne({
+        "email": req.params['email']
+
     }).then((res2) => {
         classes = res2['classes']
         email = res2['email']
@@ -258,8 +249,7 @@ app.get('/getUser/:email', (req , res) =>
         bio = res2['bio']
         joined = res2['joined']
 
-        if(res2['studentAccount'])
-        {
+        if (res2['studentAccount']) {
 
             Test.findOne({ 'email': req.params['email'] }).then((res) => {
                 testCases = res;
@@ -271,19 +261,18 @@ app.get('/getUser/:email', (req , res) =>
                 'email': email,
                 'classes': classes,
                 'testCases': testCases,
-                'joined' : joined,
+                'joined': joined,
                 'studentAccount': res2['studentAccount']
             });
         }
-        else
-        {
+        else {
             res.json({
                 'name': name,
                 'bio': bio,
                 'email': email,
                 'classes': classes,
                 'testCases': testCases,
-                'joined' : joined,
+                'joined': joined,
                 'studentAccount': res2['studentAccount']
             });
         }
@@ -292,20 +281,18 @@ app.get('/getUser/:email', (req , res) =>
 
 app.get('/getClass/:class', (req, res) => {
 
-    Class.findOne({'name' : req.params['class']}).then((response) => 
-    {
+    Class.findOne({ 'name': req.params['class'] }).then((response) => {
         res.json(response)
     })
-    
+
 });
 
 app.get('/getClassByCode/:enrollCode', (req, res) => {
 
-    Class.findOne({'enrollCode' : req.params['enrollCode']}).then((response) => 
-    {
+    Class.findOne({ 'enrollCode': req.params['enrollCode'] }).then((response) => {
         res.json(response)
     })
-    
+
 });
 
 
@@ -313,7 +300,7 @@ app.get('/getClassByCode/:enrollCode', (req, res) => {
 
 app.get('/getAssignments/:class', (req, res) => { //plural , used to populate table in student's dashboard
 
-    
+
     Assignment.find({ className: req.params['class'] }).then(response => {
         console.log(response)
         res.json(response)
