@@ -188,7 +188,7 @@ const addTests = () =>
         let testName = document.createElement('h1');
         testName.innerHTML = studentDetails['testCases'][i]['name']
         let className = document.createElement('h3')
-        className.innerHTML = studentDetails['testCases'][i]['className']
+        className.innerHTML = studentDetails['testCases'][i]['class']
         let grayBar = document.createElement('div')
 
         let ProgressBar = document.createElement('div')
@@ -212,11 +212,12 @@ const addTests = () =>
             p.style.marginRight = 5
             p.style.color='rgb(95, 95, 95)'
             p.style.fontSize=15
+           // console.log(studentDetails['testCases'][i])
             let value = document.createElement('p')
             value.innerHTML = testStats[j] === 'Assignment Name' ? 
             studentDetails['testCases'][i]['assignment'] : 
             testStats[j] === 'Class Size' ? 
-            classDetails[studentDetails['testCases'][i]['className']]['size'] : 
+            classDetails[studentDetails['testCases'][i]['class']]['size'] : 
             testStats[j] === 'Semester' ? 'Fall 2022' :
             studentDetails['testCases'][i]['coverage']
 

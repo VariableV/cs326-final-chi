@@ -251,19 +251,17 @@ app.get('/getUser/:email', (req, res) => {
 
         if (res2['studentAccount']) {
 
-            Test.findOne({ 'email': req.params['email'] }).then((res) => {
-                testCases = res;
+            Test.find({ 'email': req.params['email'] }).then((testCases) => {
+                res.json({
+                    'name': name,
+                    'bio': bio,
+                    'email': email,
+                    'classes': classes,
+                    'testCases': testCases,
+                    'joined': joined,
+                    'studentAccount': res2['studentAccount']
+                });
             })
-
-            res.json({
-                'name': name,
-                'bio': bio,
-                'email': email,
-                'classes': classes,
-                'testCases': testCases,
-                'joined': joined,
-                'studentAccount': res2['studentAccount']
-            });
         }
         else {
             res.json({
@@ -329,9 +327,9 @@ app.get('/getAssignment/:class/:assignment', (req, res) => { //singular , used f
 app.get('/getTestCases/:class/:assignment', (req, res) => {
     const className = req.params["class"];
     const assignment = req.params["assignment"];
-    Test.find({$and: [{"class": className}, {"assignment": assignment}]}).then(z => {
+    Test.find({ $and: [{ "class": className }, { "assignment": assignment }] }).then(z => {
         console.log(z)
-        res.json({"result" : z})
+        res.json({ "result": z })
     })
 })
 
