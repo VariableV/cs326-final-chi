@@ -5,109 +5,161 @@ import { Assignment, User, Test, Class } from './server/models.js';
 import dotenv from "dotenv"
 dotenv.config()
 const url = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017';
+import session from 'express-session'
 
 connect(url);
 
 const app = express();
 const port = process.env.PORT || 3000;
+const store = new session.MemoryStore();
 
 app.use(express.json());
 
+app.use(session({
+    secret: 'QWERTYU',
+    cookie: { maxAge: 600000 },
+    saveUninitialized: false,
+    store
+}))
+
 
 app.post('/loginUser', (req, res) => {
-    if (!req.body) {
-        return;
+
+    console.log(req.sessionID)
+    console.log(req.session)
+    console.log(store)
+
+    if (req.body.password && req.body.email) {
+        User.find({ email: req.body.email, password: req.body.password }).count().then((ans) => {
+            if (ans) {
+                req.session.authenticated = true;  // when the session object is modified it is going to save  to store automatically
+                req.session.user = {
+                    'email': req.body.email
+                }
+                res.status(200).json({ sesssion: req.session, found: true })
+            }
+            else {
+                res.status(500).json({ found: false })
+            }
+
+        })
     }
-    User.find({ email: req.body.email, password: req.body.password }).count().then((ans) => {
-        if (ans) {
-            res.status(200).json({ found: true })
-        }
-        else {
-            res.status(200).json({ found: false })
-        }
-    })
+    else {
+        res.sendStatus(500)
+    }
+
 })
 
+app.post('/logoutUser', (req, res) => {
+
+    console.log(req.sessionID)
+    const headerCookie = req.headers.cookie?.split('s%3A')[1]
+    console.log(headerCookie)
+    res.send(200)
+
+})
+
+
 app.post('/createStudent', async (req, res) => {
-    if (!req.body) {
-        return;
-    }
 
-    let userExists = false;
 
-    await User.findOne({ email: req.body.email }).then(val => {
-        if (val !== null) {
-            userExists = true;
+    console.log(req.sessionID)
+    
+
+    if (req.body.password && req.body.email) {
+
+
+        let userExists = false;
+
+        await User.findOne({ email: req.body.email }).then(val => {
+            if (val !== null) {
+                userExists = true;
+            }
+        })
+
+        if (userExists) {
+            req.session.authenticated = true;  // when the session object is modified it is going to save  to store automatically
+            req.session.user = {
+                'email': req.body.email
+            }
+            res.sendStatus(500)
+            return;
         }
-    })
 
-    if (userExists) {
+
+        const data = new User({
+            email: req.body.email,
+            studentAccount: true,
+            classes: [],
+            name: '',
+            bio: '',
+            joined: new Date(),
+            password: req.body.password
+        })
+
+
+        try {
+            const dataToSave = await data.save();
+            res.status(200).json(dataToSave)
+        }
+        catch (error) {
+            res.status(400).json({ message: error.message })
+        }
+    }
+    else {
         res.sendStatus(500)
-        return;
-    }
-
-
-    const data = new User({
-        email: req.body.email,
-        studentAccount: true,
-        classes: [],
-        name: '',
-        bio: '',
-        joined: new Date(),
-        password: req.body.password
-    })
-
-
-    try {
-        const dataToSave = await data.save();
-        res.status(200).json(dataToSave)
-    }
-    catch (error) {
-        res.status(400).json({ message: error.message })
     }
 });
 
 app.post('/createInstructor', async (req, res) => {
-    if (!req.body) {
-        return;
-    }
-    let userExists = false;
 
-    await User.findOne({ email: req.body.email }).then(val => {
-        if (val !== null) {
-            userExists = true;
+    if (req.body.password && req.body.email) {
+
+        let userExists = false;
+        await User.findOne({ email: req.body.email }).then(val => {
+            if (val !== null) {
+                userExists = true;
+            }
+        })
+
+        if (userExists) {
+            res.sendStatus(500)
+            return;
         }
-    })
 
-    if (userExists) {
+        const data = new User({
+            email: req.body.email,
+            studentAccount: false,
+            classes: [],
+            name: '',
+            bio: '',
+            joined: new Date(),
+            password: req.body.password
+        })
+
+        try {
+            const dataToSave = await data.save();
+            req.session.authenticated = true;  // when the session object is modified it is going to save  to store automatically
+            req.session.user = {
+                'email': req.body.email
+            }
+            res.status(200).json(dataToSave)
+        }
+        catch (error) {
+            res.status(400).json({ message: error.message })
+        }
+    }
+    else {
         res.sendStatus(500)
-        return;
-    }
-
-    const data = new User({
-        email: req.body.email,
-        studentAccount: false,
-        classes: [],
-        name: '',
-        bio: '',
-        joined: new Date(),
-        password: req.body.password
-    })
-
-    try {
-        const dataToSave = await data.save();
-        res.status(200).json(dataToSave)
-    }
-    catch (error) {
-        res.status(400).json({ message: error.message })
     }
 
 });
 
 app.post('/createClass', async (req, res) => {
-    if (!req.body) {
-        return;
-    }
+    
+    console.log(req.session.user)
+    console.log(req.sessionID)
+
     let classExists = false;
 
     await Class.findOne({ name: req.body.name }).then(val => {
