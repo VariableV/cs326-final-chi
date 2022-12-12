@@ -89,8 +89,9 @@ function addAssignmentsToDiv()
             div.classList.add('assignmentElem')
             let className = document.createElement('p')
             className.innerHTML = assignmentDetails[i]['className']
-            let assignmentName = document.createElement('p')
+            let assignmentName = document.createElement('a')
             assignmentName.innerHTML = assignmentDetails[i]['name']
+            assignmentName.href = `/assignment/${assignmentDetails[i]['className']}/${assignmentDetails[i]['name']}`
             let createdAt = document.createElement('p')
             createdAt.innerHTML = `${months[new Date(assignmentDetails[i]['release']).getMonth()]} ${new Date(assignmentDetails[i]['release']).getDate()}, ${new Date(assignmentDetails[i]['release']).getFullYear()}`
             let dueAt = document.createElement('p')

@@ -40,11 +40,11 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 p-4">
+            <div class="col-lg-8 p-4" id="codeBlocks">
                 <div class="row">
                     <div class="col-8">
-                        <h2>COMPSCI 326</h2>
-                        <h3>Homework 3</h3>
+                        <h2 id="class_name"></h2>
+                        <h3 id="assignment_name"></h3>
                     </div>
                     <div class="col ">
 
@@ -54,58 +54,56 @@
                                     TOTAL COVERAGE
                                 </a>
                             </b>
-                            <a class="text-dark text-decoration-none d-flex justify-content-center ">
-                                85%
+                            <a id="coveragePercent"
+                                class="text-dark text-decoration-none d-flex justify-content-center">
+                                0%
                             </a>
                         </div>
 
                     </div>
                 </div>
-
-                <div class="row border rounded-4 bg-muted shadow p-3 mb-5">
-                    <div class="col d-flex justify-content-center">
-                        <a>Test 1</a>
+                <div class="row pb-3">
+                    <h4>Code to Test:</h4>
+                    <div id="testCode" class="card card-body" style="font-family:courier, courier new, serif;">
                     </div>
-                    <div class="col-9">
-                        <div class="progress mt-1">
-                            <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
-                                aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                    <div class="col d-flex justify-content-center">
-                            <a class="text-dark text-decoration-none" data-toggle="collapse" href="#collapseExample"
-                                role="button" aria-expanded="false" aria-controls="collapseExample">
-                                +
-                            </a>
-                    </div>
-
-                    <div class="collapse mt-2" id="collapseExample">
-                        <div class="card card-body">
-                            CODE BLOCK
-                        </div>
-                    </div>
+                </div>
+                <div class="row-2 pb-3">
+                    <button id="createTest"
+                    class="btn btn-primary"
+                        >+
+                        Submit Test</button>
                 </div>
 
 
+                <div id="createTestModal">
+                    <div class="assignment-modal-content" style="overflow-y: scroll;">
+                        <h2 style="font-weight: 550; text-align: center;">Submit Test</h2>
+                        <div style="width: 100%; margin-bottom: 20px;">
+                            <p style="color: gray;font-size:12px; text-align: center;">Write and submit your test for autograding, please use a unique name for you test.</p>
+                        </div>
+                        <div style="margin-bottom: 10px ; align-items: center; display: flex;">
+                            <p style="width: 150px" ;>Test Name</p>
+                            <input type="text" style="width: 100%" id="testNameField">
+                        </div>
 
+                        <div style="margin-bottom: 10px ; display:flex;">
+                            <p style="width: 150px;">Your Test</p>
+                            <textarea rows="4" cols="20" id="testCodeBlock" style="width: 100%; font-family:courier, courier new, serif;"></textarea>
+                        </div>
 
+                        <div style="display: flex; justify-content: center; margin-top: 10px;">
+                            <button id="testSubmit"
+                                style="cursor: pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(8, 92, 8);">Submit</button>
+                            <button id="testCancel"
+                                style="cursor:pointer; margin: 5; padding: 5 15; color:white;background-color: rgb(126, 15, 15);">Cancel</button>
+                        </div>
 
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-4 p-4">
+
+            <div class="col-lg-4 p-4" id="leaderboard">
                 <h1>Leaderboard</h1>
-
-                <div class="row border rounded-4 bg-muted shadow p-3 ">
-                    <div class="col d-flex justify-content-center">
-                        <a>John Doe</a>
-                    </div>
-                    <div class="col-9">
-                        <div class="progress mt-1">
-                            <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85"
-                                aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
 

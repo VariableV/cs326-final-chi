@@ -144,7 +144,7 @@ app.post('/createAssignment', async (req, res) => {   // creates assignemnt in c
         return;
     }
 
-    let assignmentName = req.body.name
+    let assignmentName = req.body.name.toLowerCase()
     let className = req.body.className
     let classEnrollCode = req.body.classEnrollCode
     let dueDate = req.body.dueDate
@@ -309,26 +309,31 @@ app.get('/getAssignments/:class', (req, res) => { //plural , used to populate ta
 
 
 
-app.get('/getAssignment', (req, res) => { //singular , used for the assignment page , need assignmentId
-    if (!req.body) {
-        return;
-    }
+app.get('/getAssignment/:class/:assignment', (req, res) => { //singular , used for the assignment page , need assignmentId
+
     Assignment.find({
         $and: [
             {
-                "name": req.body.name
+                "name": req.params["assignment"]
             },
             {
-                "class": req.body.class
+                "class": req.params["class"]
             }
         ]
-    }).then(res => {
-        res.json({ 'result': res })
+    }).then(ans => {
+        console.log(ans)
+        res.json({ 'result': ans })
     })
 });
 
-
-
+app.get('/getTestCases/:class/:assignment', (req, res) => {
+    const className = req.params["class"];
+    const assignment = req.params["assignment"];
+    Test.find({$and: [{"class": className}, {"assignment": assignment}]}).then(z => {
+        console.log(z)
+        res.json({"result" : z})
+    })
+})
 
 app.use('/components/appNavbar/', express.static('components/appNavBar'));
 app.use('/components/loginNavbar/', express.static('components/loginNavbar'));
