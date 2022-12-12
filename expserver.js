@@ -249,7 +249,7 @@ app.post('/createAssignment', async (req, res) => {   // creates assignemnt in c
     let dueDate = req.body.dueDate
     let releasedDate = req.body.released
     let testFunction = req.body.testFunction
-    let correctFunction = req.body.correctFunction
+    let correctFunction = req.body.correctFunctin
 
     await Assignment.insertMany({
         'name': assignmentName, 'className': className, 'release': releasedDate, 'due': dueDate,

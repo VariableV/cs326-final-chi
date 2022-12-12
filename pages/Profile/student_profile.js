@@ -65,7 +65,7 @@ Deets().then((res) =>
     [{title:'Class Teaching' , value: studentDetails['classes'].length} ,
     {title:'Current Classes' , value:studentDetails['classes'].length},
     {title:'Average Class Size' , value:avgClassSize}, 
-    {title:'Submission Ratio' , value:assignmentDetails.reduce((p, c) => p + c['submissions'], 0) / sumOfStudents}, 
+    {title:'Submission Ratio' , value:assignmentDetails.reduce((p, c) => p + c['submissions'], 0) / sumOfStudents === 0 ? 1 : sumOfStudents}, 
     ]
 
     const testStats = ['Assignment Name' , 'Class Size' ,  'Coverage' , 'Semester']
