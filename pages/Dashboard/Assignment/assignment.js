@@ -41,7 +41,7 @@ window.addEventListener('load', async () => {
         total += 1;
         sum += coverage;
 
-        codeBlocks.appendChild(htmlToElement(`<div class="row border rounded-4 bg-muted shadow p-3 mb-5">
+        codeBlocks.appendChild(htmlToElement(`<div class="row border rounded-4 bg-muted shadow p-3 mb-3">
             <div class="col d-flex justify-content-center">
                 <a>${name}</a>
             </div>

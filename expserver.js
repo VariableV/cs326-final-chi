@@ -22,6 +22,40 @@ app.use(session({
     store
 }))
 
+app.use((req, res, next) => {
+   
+    const headerCookie = req.headers.cookie?.split('s%3A')[1]
+    if (req.originalUrl.split('/')[1] !== 'login') {
+        if(req.sessionID !== headerCookie)
+        {
+            console.log("USER NOT AUTHENTICATED")
+            res.redirect('/login')
+        }
+        else{
+            next()
+        }
+    }
+    else{
+        next()
+    }
+
+    
+  
+})
+
+app.use('/logout', (req,res , next) => 
+{
+    // const sessionId = req.sessionID;
+    // const headerCookie = req.headers.cookie?.split('s%3A')[1];
+
+    req.session.destroy();
+    console.log(req.sessionID)
+    console.log(req.session)
+    res.redirect('/login')
+    
+
+})
+
 
 app.post('/loginUser', (req, res) => {
 
@@ -55,6 +89,8 @@ app.post('/logoutUser', (req, res) => {
     console.log(req.sessionID)
     const headerCookie = req.headers.cookie?.split('s%3A')[1]
     console.log(headerCookie)
+
+    res.redirect('/login')
     res.send(200)
 
 })

@@ -262,3 +262,12 @@ textarea
     font-size: 14px;
    
 }
+
+.assignmentElem a
+{
+    color: blue;
+    text-decoration: underline;
+    width: 200px;
+    font-size: 14px;
+   
+}
