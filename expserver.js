@@ -22,26 +22,41 @@ app.use(session({
     store
 }))
 
-app.use((req, res, next) => {
+app.use('/components/appNavbar/', express.static('components/appNavBar'));
+app.use('/components/loginNavbar/', express.static('components/loginNavbar'));
+app.use('/constants/images/', express.static('constants/images'));
+
+
+app.use('/', !apiObj['student'] && !apiObj['instructor'] ? express.static('pages/Landing/Login') : express.static('pages/Dashboard/Assignment'))
+app.use('/profile', express.static('pages/Profile'));
+app.use('/signup', express.static('pages/Landing/Signup'));
+app.use('/login', express.static('pages/Landing/Login'));
+app.use('/assignment/:class/:assignment', express.static('pages/Dashboard/Assignment'));
+app.use('/dashboard', express.static('pages/Dashboard/Dashboard'));
+app.use('/profile', express.static('pages/Profile'));
+
+// app.use((req, res, next) => {
    
-    const headerCookie = req.headers.cookie?.split('s%3A')[1]
-    if (req.originalUrl.split('/')[1] !== 'login') {
-        if(req.sessionID !== headerCookie)
-        {
-            console.log("USER NOT AUTHENTICATED")
-            res.redirect('/login')
-        }
-        else{
-            next()
-        }
-    }
-    else{
-        next()
-    }
+//     const headerCookie = req.headers.cookie?.split('s%3A')[1]
+//     if (req.originalUrl.split('/')[1] !== 'login') {
+//         if(req.sessionID !== headerCookie)
+//         {
+//             console.log("USER NOT AUTHENTICATED")
+//             res.redirect('/login')
+//         }
+//         else{
+//             next()
+//         }
+//     }
+//     else{
+//         next()
+//     }
+
+    
 
     
   
-})
+// })
 
 app.use('/logout', (req,res , next) => 
 {
@@ -423,18 +438,7 @@ app.get('/getTestCases/:class/:assignment', (req, res) => {
     })
 })
 
-app.use('/components/appNavbar/', express.static('components/appNavBar'));
-app.use('/components/loginNavbar/', express.static('components/loginNavbar'));
-app.use('/constants/images/', express.static('constants/images'));
 
-
-app.use('/', !apiObj['student'] && !apiObj['instructor'] ? express.static('pages/Landing/Login') : express.static('pages/Dashboard/Assignment'))
-apiObj['student'] && app.use('/profile', express.static('pages/Profile'));
-app.use('/signup', express.static('pages/Landing/Signup'));
-app.use('/login', express.static('pages/Landing/Login'));
-app.use('/assignment/:class/:assignment', express.static('pages/Dashboard/Assignment'));
-app.use('/dashboard', express.static('pages/Dashboard/Dashboard'));
-app.use('/profile', express.static('pages/Profile'));
 
 
 app.listen(port, () => {
