@@ -102,16 +102,7 @@ app.post('/loginUser', (req, res) => {
 
 })
 
-app.post('/logoutUser', (req, res) => {
 
-    console.log(req.sessionID)
-    const headerCookie = req.headers.cookie?.split('s%3A')[1]
-    console.log(headerCookie)
-
-    res.redirect('/login')
-    res.send(200)
-
-})
 
 
 app.post('/createStudent', async (req, res) => {
