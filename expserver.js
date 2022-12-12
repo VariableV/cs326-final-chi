@@ -154,7 +154,7 @@ app.post('/createAssignment', async (req, res) => {   // creates assignemnt in c
 
     await Assignment.insertMany({
         'name': assignmentName, 'className': className, 'release': releasedDate, 'due': dueDate,
-        'submissions': Math.floor(Math.random() * 101), 'test': testFunction, 'correct': correctFunction
+        'submissions': 0, 'test': testFunction, 'correct': correctFunction
     })
 
     await Class.updateOne({
@@ -187,10 +187,13 @@ app.post('/createTestCase', (req, res) => { //increment assignment submission by
         assignment: req.body.assignment, // assignment test is associated with
         coverage: Math.floor(Math.random() * 101), // percent coverage
         code: req.body.code // block of code for a test
-
     })
 
-    res.send(200)
+    Assignment.findOne({'name': req.body.assignment, 'className': req.body.class}).then(r => {
+        r.submissions += 1
+        r.save()
+        res.send(200)
+    });
 
 });
 
@@ -300,7 +303,7 @@ app.get('/getAssignments/:class', (req, res) => { //plural , used to populate ta
 
 
     Assignment.find({ className: req.params['class'] }).then(response => {
-        console.log(response)
+      //  console.log(response)
         res.json(response)
     })
 });
@@ -319,7 +322,7 @@ app.get('/getAssignment/:class/:assignment', (req, res) => { //singular , used f
             }
         ]
     }).then(ans => {
-        console.log(ans)
+      //  console.log(ans)
         res.json({ 'result': ans })
     })
 });
@@ -328,7 +331,6 @@ app.get('/getTestCases/:class/:assignment', (req, res) => {
     const className = req.params["class"];
     const assignment = req.params["assignment"];
     Test.find({ $and: [{ "class": className }, { "assignment": assignment }] }).then(z => {
-        console.log(z)
         res.json({ "result": z })
     })
 })
