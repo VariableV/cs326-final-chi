@@ -8,8 +8,8 @@
 “Test It!” gamifies the testing process by having students compete to craft the best set of tests that will provide as much code coverage or bug discovery as possible. Students join a classroom on the site, and will see a list of all the projects assigned by a teacher. They can write and submit their tests under the projects. The tests are rated in terms of their coverage with automated systems (as you choose what sort of coverage there should be). Their tests are compared with the coverage and rated in terms of that. Once the project period is up, a leaderboard is released of students’ ranking and the tests are released for people to compare. The points assigned to the students’ final results can then be used for any reward system such as extra points in grading. This is primarily a learning tool to encourage students to make tests that have good coverage via competition.
 
 ### Team Members
-Maheen Hussain - @VariableV
-Kanishk Chaudhary - @KanishkC9 and @Kanishk-Chaudhary(this alias was not connected properly so it doesn’t show in contributors, please check pulse for this)
+* Maheen Hussain - @VariableV
+* Kanishk Chaudhary - @KanishkC9 and @Kanishk-Chaudhary(this alias was not connected properly so it doesn’t show in contributors, please check pulse for this)
 
 ### User Interface
 ![login](./images/Login.png)
@@ -98,8 +98,8 @@ assignment document {
 We have used server side authentication in our web application using express. We have made sure that a user who is not authenticated cannot access pages other than the login and signup. When the user logs in, A session is created which has a maxAge of 600,000 (10 mins). When the user logs out that session is destroyed. If the user session expires then the user will be redirected to the login page and prompted to log in.
 
 ### Division of Labor
-Maheen Hussain - Pitched the idea and the basic functionality. Designed wireframe for assignment view and student dashboard. Worked on front-end code for the assignment page interactions and laid things out with Bootstrap. Setup the back-end server and express endpoints. Designed the database schema and integrated the models with express server. 
-Kanishk Chaudhary - Designed wireframe for login/signup, profile page, and instructor dashboard. Wrote out  front-end code for profile page, dashboard and login/signup. Wrote various endpoints used by front-end pages and implemented database interactions with MongoDB. Setup authentication while working on login/signup.
+* Maheen Hussain - Pitched the idea and the basic functionality. Designed wireframe for assignment view and student dashboard. Worked on front-end code for the assignment page interactions and laid things out with Bootstrap. Setup the back-end server and express endpoints. Designed the database schema and integrated the models with express server. 
+* Kanishk Chaudhary - Designed wireframe for login/signup, profile page, and instructor dashboard. Wrote out  front-end code for profile page, dashboard and login/signup. Wrote various endpoints used by front-end pages and implemented database interactions with MongoDB. Setup authentication while working on login/signup.
 
 ### Conclusion
 Overall this project gave us a good understanding of the need to work collaboratively and working together to get through different challenges we face. As we went through the design process from wireframe to the final product there were quite a bit of changes from our original concept that were a result of our time limitations, and team member limitations (as one of our members did very little to contribute towards the final deliverable). The technical process allowed us to deepen our understanding of how to piece together different aspects of the production stack, from the basic front-end to the back-end and also database. One thing that we would’ve liked to have more time or a better grounding of is general application security and authentication which we saved until the end and crunched to get done.
