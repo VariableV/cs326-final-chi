@@ -65,8 +65,9 @@ document.getElementById('loginButton').addEventListener('click' , () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          'email': email,
-          'password' : password//crypto.createHash('sha256').update(password).digest('hex')
+            'email': email,
+            //'password' : password
+            'password': CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex)
         })
       }).then(res => res.json()).then(res => {
         if(res['found'])

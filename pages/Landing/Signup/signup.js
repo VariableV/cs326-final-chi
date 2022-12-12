@@ -1,7 +1,6 @@
 // import apiObj from '../../../server/store.js'
 //import sha256
 
-
 document.getElementById('togglePassword').addEventListener('click' , () => 
 {
     document.getElementById('togglePassword').classList.toggle('bi-eye');
@@ -9,8 +8,6 @@ document.getElementById('togglePassword').addEventListener('click' , () =>
     const type = password.getAttribute("type") === "password" ? "text" : "password";
     password.setAttribute("type", type);
 })
-
-
 
 
 document.getElementById('signupButton').addEventListener('click' , () => {
@@ -86,8 +83,9 @@ document.getElementById('signupButton').addEventListener('click' , () => {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                  'email': email,
-                  'password' : password//crypto.createHash('sha256').update(password).digest('hex')
+                    'email': email,
+                    // 'password' : password
+                    'password': CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex)
                 })
               }).then((res) => 
               {
@@ -105,7 +103,8 @@ document.getElementById('signupButton').addEventListener('click' , () => {
               .catch(error => alert(error.message))
         }
         else
-        {
+        {   
+            console.log(password);
             fetch("/createStudent", {
                 method: "post",
                 headers: {
@@ -113,8 +112,10 @@ document.getElementById('signupButton').addEventListener('click' , () => {
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                  'email': email,
-                  'password' : password
+                    'email': email,
+                    //'password' : password
+                    'password': CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex)
+                    //'password' : crypto.createHash('sha256').update(password).digest('hex')
                 })
               }).then((res) => 
               {
