@@ -22,41 +22,44 @@ app.use(session({
     store
 }))
 
+
 app.use('/components/appNavbar/', express.static('components/appNavBar'));
 app.use('/components/loginNavbar/', express.static('components/loginNavbar'));
 app.use('/constants/images/', express.static('constants/images'));
 
 
-app.use('/', !apiObj['student'] && !apiObj['instructor'] ? express.static('pages/Landing/Login') : express.static('pages/Dashboard/Assignment'))
-app.use('/profile', express.static('pages/Profile'));
-app.use('/signup', express.static('pages/Landing/Signup'));
-app.use('/login', express.static('pages/Landing/Login'));
-app.use('/assignment/:class/:assignment', express.static('pages/Dashboard/Assignment'));
-app.use('/dashboard', express.static('pages/Dashboard/Dashboard'));
-app.use('/profile', express.static('pages/Profile'));
 
-// app.use((req, res, next) => {
+app.use((req, res, next) => {
    
-//     const headerCookie = req.headers.cookie?.split('s%3A')[1]
-//     if (req.originalUrl.split('/')[1] !== 'login') {
-//         if(req.sessionID !== headerCookie)
-//         {
-//             console.log("USER NOT AUTHENTICATED")
-//             res.redirect('/login')
-//         }
-//         else{
-//             next()
-//         }
-//     }
-//     else{
-//         next()
-//     }
+    const headerCookie = req.headers.cookie?.split('s%3A')[1]
+    console.log(req.originalUrl?.split('/')[1])
 
-    
+    if (req.originalUrl?.split('/')[1] !== 'loginUser' && req.originalUrl?.split('/')[1] !== 'createStudent' && req.originalUrl?.split('/')[1] !== 'createInstructor'
+    && req.originalUrl?.split('/')[1] !== 'login' && req.originalUrl?.split('/')[1] !== 'signup' && 
+    req.path !== '/login' && req.path !== '/signup') 
+    {
+        if(req.sessionID !== headerCookie?.split('.')[0])
+        {
+           
+            console.log('-----------')
+            console.log(req.originalUrl?.split('/')[1] !== 'loginUser')
+            console.log(req.sessionID)
+            console.log(headerCookie?.split('.')[0])
+            console.log("USER NOT AUTHENTICATED")
+            res.redirect('/login')
+           
+        }
+        else{
+            console.log('here')
+            next()
+        }
+    }
+    else{
+        next()
+    }
 
-    
   
-// })
+})
 
 app.use('/logout', (req,res , next) => 
 {
@@ -115,6 +118,7 @@ app.post('/createStudent', async (req, res) => {
 
 
     console.log(req.sessionID)
+    console.log('here')
     
 
     if (req.body.password && req.body.email) {
@@ -129,10 +133,6 @@ app.post('/createStudent', async (req, res) => {
         })
 
         if (userExists) {
-            req.session.authenticated = true;  // when the session object is modified it is going to save  to store automatically
-            req.session.user = {
-                'email': req.body.email
-            }
             res.sendStatus(500)
             return;
         }
@@ -151,6 +151,10 @@ app.post('/createStudent', async (req, res) => {
 
         try {
             const dataToSave = await data.save();
+            req.session.authenticated = true;  // when the session object is modified it is going to save  to store automatically
+            req.session.user = {
+                'email': req.body.email
+            }
             res.status(200).json(dataToSave)
         }
         catch (error) {
@@ -164,6 +168,7 @@ app.post('/createStudent', async (req, res) => {
 
 app.post('/createInstructor', async (req, res) => {
 
+    console.log('here')
     if (req.body.password && req.body.email) {
 
         let userExists = false;
@@ -438,7 +443,13 @@ app.get('/getTestCases/:class/:assignment', (req, res) => {
     })
 })
 
+app.use('/assignment/:class/:assignment', express.static('pages/Dashboard/Assignment'));
+app.use('/dashboard', express.static('pages/Dashboard/Dashboard'));
+app.use('/profile', express.static('pages/Profile'));
 
+app.use('/', express.static('pages/Landing/Login'))
+app.use('/signup', express.static('pages/Landing/Signup'));
+app.use('/login', express.static('pages/Landing/Login'));
 
 
 app.listen(port, () => {

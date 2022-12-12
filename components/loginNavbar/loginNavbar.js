@@ -11,14 +11,14 @@ document.write(`
                 
             <div class="menu">
                 <li>
-                    <a href="/Login">
+                    <a href="/login">
                         <div style="background-color: transparent;" id ="navButton">
                             Log In
                         </div>
                     </a>
                 </li>
                 <li>
-                    <a href="/Signup">
+                    <a href="/signup">
                         <div style="background-color: white; color: black; padding:8 45" id ="navButton">
                             Sign Up
                         </div>
