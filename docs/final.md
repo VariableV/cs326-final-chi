@@ -28,23 +28,23 @@ Profile Page - This page represents different stats for both students and instru
 Assignment Page - This page shows an assignment for a particular class. This will show the test function that the student will write their tests on spit out scores for that. These scores are then used to populate the leaderboard on the right which shows the highest scoring users for that assignment.
 
 ### APIs
-/loginUser - POST request which needs email and password in body to log the user in
-/createStudent - POST request which needs email and password in body to create a student
-/createInstructor - POST request which needs email and password in body to create an Instructor
-/createClass - POST request which needs name of the class and email of the instructor teaching in body to create a class and provide an enroll code
-/createAssignment - POST request which needs assignmentName className classEnrollCode dueDate releasedDate testFunction and correctFunction in body to create an assignment for a particular class. 
-/createTestCase - - POST request which needs name studentEmail className assignmentName and code in body to create a TestCase for a particular Assignment. 
-/updateUser - POST request which needs an email and bio to update user’s profile
-/enrollClass - POST request which needs enrollCode and studentEmail to enroll the student in a class and update the class size
-
-/logout - Destroys the current session and redirects the user to the login page
-
-/getUser/:email - GET request that gets the user’s details , like name, bio, classes etc.
-/getClass/:class - GET request that gets additional information for a class like classSize, Assignments, instructor etc.
-/getClassByCode/:enrollCode - GET request that gets additional information for a class using the unique enroll code.
-/getAssignments/:class - GET request that gets all the assignments of a particular class
-/getAssignment/:class/:assignment - GET request that gets a particular assignment of a particular class
-/getTestCases/:class/:assignment - GET request that gets all the TestCases for an assignment in a particular class
+|Endpoint|Request Type|Description|
+| :- | :- | :- |
+|`/loginUser`|POST|request which needs email and password in body to log the user in|
+|`/createStudent`|POST|request which needs email and password in body to create a student|
+|`/createInstructor`|POST|request which needs email and password in body to create an Instructor|
+|`/createClass`|POST|request which needs name of the class and email of the instructor teaching in body to create a class and provide an enroll code|
+|`/createAssignment`|POST|request which needs assignmentName className classEnrollCode dueDate releasedDate testFunction and correctFunction in body to create an assignment for a particular class.|
+|`/createTestCase`|POST|request which needs name studentEmail className assignmentName and code in body to create a TestCase for a particular Assignment.|
+|`/updateUser`|POST|request which needs an email and bio to update user’s profile|
+|`/enrollClass`|POST|request which needs enrollCode and studentEmail to enroll the student in a class and update the class size|
+|`/logout`|GET|Destroys the current session and redirects the user to the login page|
+|`/getUser/:email`|GET|request that gets the user’s details , like name, bio, classes etc.|
+|`/getClass/:class`|GET|request that gets additional information for a class like classSize, Assignments, instructor etc.|
+|`/getClassByCode/:enrollCode`|GET|request that gets additional information for a class using the unique enroll code.|
+|`/getAssignments/:class`|GET|request that gets all the assignments of a particular class|
+|`/getAssignment/:class/:assignment`|GET|request that gets a particular assignment of a particular class|
+|`/getTestCases/:class/:assignment`|GET|request that gets all the TestCases for an assignment in a particular class|
 
 ### Database
 We used MongoDB to manage our data needs. The documents used by our API are described below:
@@ -88,11 +88,11 @@ assignment document {
 ```
 
 ### URL Routes/Mappings
-/login - Route to the login page
-/signup - Route to the sign up page
-/dashboard - Route to the instructor/student dashboard containing information about classes, enrolling in them, and assignments. Protected by user authentication.
-/profile - Route to the profile page containing biographical information about the user and different statistics. Protected by user authentication.
-/assignment/:class/:assignment - Route to the specific assignment page a user can submit and view their tests in. Protected by user authentication.
+* /login - Route to the login page
+* /signup - Route to the sign up page
+* /dashboard - Route to the instructor/student dashboard containing information about classes, enrolling in them, and assignments. Protected by user authentication.
+* /profile - Route to the profile page containing biographical information about the user and different statistics. Protected by user authentication.
+* /assignment/:class/:assignment - Route to the specific assignment page a user can submit and view their tests in. Protected by user authentication.
 
 ### Authentication/Authorization
 We have used server side authentication in our web application using express. We have made sure that a user who is not authenticated cannot access pages other than the login and signup. When the user logs in, A session is created which has a maxAge of 600,000 (10 mins). When the user logs out that session is destroyed. If the user session expires then the user will be redirected to the login page and prompted to log in.
